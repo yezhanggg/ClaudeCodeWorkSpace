@@ -2,3 +2,4 @@
 out/*
 !out/puff_cloud_10s.mp4
 !out/puff_cloud_10s.gif
+!out/puff_cloud_10s_small.gif
