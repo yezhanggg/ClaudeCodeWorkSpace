@@ -35,7 +35,7 @@ swatches = [('#F5EDE1', 'Main cloud', 'Warm white (cream)'), ('#E6D8C7', 'Shadow
 sw = ''.join(f'<div class="sw"><i style="background:{c}"></i><b>{e(n)}</b><span>{c} · {e(d)}</span></div>' for c, n, d in swatches)
 pages.append(page(2, 'Meet the character', 'Meet <em>Journal</em>', f'''
 <div class="two">
-  <div class="hero-card"><img src="img/hero_black.jpg" alt="Journal, front view"></div>
+  <div class="hero-card light"><img src="img/hero_white.jpg" alt="Journal, front view"></div>
   <div class="stack">
     <p class="lede">Journal is a small needle-felted cloud with two glossy black eyes and no mouth. It never speaks:
     it shows how it feels through shape, tilt, light and a few glowing marks drawn in the air.</p>
@@ -144,63 +144,21 @@ pages.append(page(9, 'Environments', 'One companion, every kind of sky', f'''
 <p class="note">The felt body keeps its cream colour everywhere; the world tints it. Daylight is neutral, golden hour
 adds peach in the creases, night turns the glow lavender, and rain greys the wool down.</p>''', 'dense'))
 
-# 10 the 3D model
-model = ''.join(fig(f'img/model/{f}.jpg', t) for f, t in [('t0_75', 'Front'), ('t2_75', '3/4 turning right'),
-                                                              ('t3_05', 'Side'), ('t3_50', 'Back'), ('t4_00', 'Other side')])
-pages.append(page(10, '3D model', 'Journal as a real-time 3D model', f'''
-<div class="two wide">
-  <div class="hero-card dark"><img src="img/model/t0_75.jpg" alt="3D model, front view"></div>
-  <div class="stack">
-    <p class="lede">For animation, Journal is built as a raymarched 3D shape that runs live in a web browser, on a phone,
-    tablet or computer.</p>
-    <dl class="facts">
-      <dt>Shape</dt><dd>One central mass and 12 felt puffs, blended smoothly, laid out from the hero image</dd>
-      <dt>Surface</dt><dd>Curly felt fibres at three scales, peach creases, a backlit fuzzy rim and glow</dd>
-      <dt>Eyes</dt><dd>Glossy beads set into the felt, with a soft highlight upper left; they blink and squeeze</dd>
-      <dt>Motion</dt><dd>Spring physics for every move: overshoot, follow-through, and puffs that settle on their own</dd>
-    </dl>
-  </div>
-</div>
-<p class="label">Model turnaround</p><div class="row five dark">{model}</div>'''))
-
-# 11 the 10-second animation
-beats = [('t0_80', '0.8 s', 'Hover', 'Idle breathing, a blink'), ('t2_75', '2.8 s', 'Turn away', 'Eyes slide off to the right'),
-         ('t3_50', '3.5 s', 'Back view', 'No face, puffs roll past'),
-         ('t4_05', '4.1 s', 'Eyes return', 'From the left side'), ('t6_65', '6.7 s', 'Crouch', 'Squash before the rise'),
-         ('t7_10', '7.1 s', 'Rise', 'Stretch, the shadow shrinks'), ('t8_30', '8.3 s', 'Glint', 'Happy squint, light ticks'),
-         ('t9_20', '9.2 s', 'Settle', 'Proud float, then fade')]
-bt = ''.join(fig(f'img/anim/{f}.jpg', f'{tc} · {t}', s) for f, tc, t, s in beats)
-pages.append(page(11, 'In motion', 'The 10-second animation', f'''
-<div class="grid g4 anim">{bt}</div>
-<p class="note">Built from the storyboard: a full turn, a crouch and rise, then a glint. Watch it live at
-<a href="{PLAYER}">{PLAYER.replace("https://", "")}</a> (private link; sign in to claude.ai). The rendered files are
-<b>puff_cloud_10s.mp4</b> (1080p, 30 fps) and <b>puff_cloud_10s.gif</b>.</p>'''))
-
-# 12 back cover / usage
-pages.append(page(12, 'Usage', 'Keeping Journal on model', '''
-<div class="two usage">
-  <div class="dos">
-    <h3>Do</h3>
-    <ul>
-      <li>Keep the cream felt colour and the warm backlit glow in every scene.</li>
-      <li>Keep the eyes small, glossy and level: about 12% of the width, 20% apart.</li>
-      <li>Show feelings with shape, tilt and light first, then add one light-beam mark.</li>
-      <li>Let the world tint the cloud: peach at golden hour, lavender at night, grey in rain.</li>
-      <li>Move slowly and buoyantly, with an ease in and a soft settle.</li>
-    </ul>
-  </div>
-  <div class="dos dont">
-    <h3>Don't</h3>
-    <ul>
-      <li>Add a mouth, eyebrows, arms or legs.</li>
-      <li>Use hard outlines, flat cartoon colour or a plastic shine on the felt.</li>
-      <li>Stack several symbols at once, or put symbols over the eyes.</li>
-      <li>Use words in place of symbols.</li>
-      <li>Snap between poses or move at one constant speed.</li>
-    </ul>
-  </div>
-</div>
-<div class="closing"><img src="img/react12.jpg" alt=""><p>A little light in every kind of day.</p></div>'''))
+# 10 app icon
+ICONS = [('light', 'Light', 'Soft white felt with a warm inner glow', '#FAF8F6'),
+         ('dark', 'Dark', 'The glow at full strength on near-black', '#181716'),
+         ('sky', 'Sky', 'The glowing cloud on a clear daytime blue', '#67A2F4'),
+         ('sunset', 'Sunset', 'Blue fading to peach: the golden-hour palette', '#6099DF to #FDBE82')]
+big = ''.join(f'<figure class="icon"><div class="ic"><img src="img/icon_{k}.jpg" alt="{t} app icon"></div>'
+              f'<figcaption><b>{t}</b><span>{e(d)}</span><span class="hex">{e(h)}</span></figcaption></figure>' for k, t, d, h in ICONS)
+small = ''.join(f'<div class="sizes">' + ''.join(f'<img src="img/icon_{k}.jpg" style="width:{mm}mm;height:{mm}mm" alt="">' for mm in (18, 12, 8)) +
+                f'<span>{t}</span></div>' for k, t, _, _ in ICONS)
+pages.append(page(10, 'App icon', 'Possible app icons', f'''
+<p class="note">The icon reduces Journal to its silhouette and its glow: a single soft cloud shape lit from inside, with no eyes,
+so it stays readable at small sizes. Four background options are under consideration.</p>
+<div class="row four icons">{big}</div>
+<p class="label">At home-screen, settings and notification sizes</p>
+<div class="row four">{small}</div>'''))
 
 CSS = open('catalog.css').read()
 FONTS = open('fonts/fonts.css').read()

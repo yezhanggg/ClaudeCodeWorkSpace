@@ -8,8 +8,8 @@
 /* Layout: A4 landscape spreads in the style of the reference sheets: cream paper, a classic serif for names,
    letter-spaced small labels, and the warm gold of the cloud's glow as the only accent. */
 :root {
-  --paper: #f7f1e8;
-  --paper-2: #efe6d8;
+  --paper: #ffffff;
+  --paper-2: #f5f1eb;
   --ink: #3f332c;
   --muted: #8b7b6e;
   --line: #d9cbb8;
@@ -115,6 +115,19 @@ figcaption span { font: 500 5.6pt/1.3 var(--sans); letter-spacing: .2em; text-tr
 .cover h1 { margin: 0; font: 500 52pt/.95 var(--serif); letter-spacing: -.01em; color: var(--ink); }
 .cover .tag { margin: 0; font: italic 500 15pt/1.35 var(--serif); color: var(--muted); }
 .cover .meta { margin: 6mm 0 0; padding-top: 4mm; border-top: .3mm solid var(--line); font: 500 6.6pt/1.6 var(--sans); letter-spacing: .24em; text-transform: uppercase; color: var(--muted); }
+
+.hero-card.light { background: #fff; }
+.hero-card.light img { object-fit: contain; }
+/* app icons */
+.icons figure { gap: 3mm; }
+.ic { aspect-ratio: 1 / 1; }
+.ic img { object-fit: contain; }
+.icons figcaption b { font-size: 15pt; }
+.icons figcaption span { font-size: 6pt; }
+.icons .hex { letter-spacing: .08em; color: var(--ink); }
+.sizes { display: flex; align-items: flex-end; justify-content: center; gap: 4mm; padding: 4mm 0 0; border-top: .3mm solid var(--line); flex-wrap: wrap; }
+.sizes img { width: auto; flex: 0 0 auto; object-fit: contain; }
+.sizes span { flex-basis: 100%; text-align: center; font: 500 6pt/1 var(--sans); letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
 </style></head><body><section class="page cover">
   <div class="cover-img"><img src="img/hero_white.jpg" alt="The Journal Cloud"></div>
   <div class="cover-text">
@@ -125,7 +138,7 @@ figcaption span { font: 500 5.6pt/1.3 var(--sans); letter-spacing: .2em; text-tr
   </div>
 </section><section class="page "><header class="run"><span>The Journal Cloud</span><span>Meet the character</span></header><h2>Meet <em>Journal</em></h2>
 <div class="two">
-  <div class="hero-card"><img src="img/hero_black.jpg" alt="Journal, front view"></div>
+  <div class="hero-card light"><img src="img/hero_white.jpg" alt="Journal, front view"></div>
   <div class="stack">
     <p class="lede">Journal is a small needle-felted cloud with two glossy black eyes and no mouth. It never speaks:
     it shows how it feels through shape, tilt, light and a few glowing marks drawn in the air.</p>
@@ -163,45 +176,9 @@ stretch for excited, eyes lower for sleepy. Light-beam marks are added on top wh
 small overshoot. Light trails show direction (an arrow for lift, a ring for rotation) and fade as the move ends.</p><footer class="folio">07</footer></section><section class="page dense"><header class="run"><span>The Journal Cloud</span><span>Weather moods</span></header><h2>Rain, snow and night</h2><div class="wx"><div class="wx-head"><h3>Rain</h3><p>Cozy, fresh and full of life</p><div class="dots"><i style="background:#8E90A8"></i><i style="background:#AEB0C2"></i><i style="background:#D3D4DE"></i><i style="background:#8FA6C8"></i></div></div><div class="row four"><figure class=""><div class="ph"><img src="img/weather01.jpg" alt="Drizzly / Cozy rain"></div><figcaption><b>Drizzly / Cozy rain</b><span>A gentle, comforting rain</span></figcaption></figure><figure class=""><div class="ph"><img src="img/weather02.jpg" alt="Stormy"></div><figcaption><b>Stormy</b><span>Windy and intense</span></figcaption></figure><figure class=""><div class="ph"><img src="img/weather03.jpg" alt="Shaking off rain"></div><figcaption><b>Shaking off rain</b><span>A fresh shake</span></figcaption></figure><figure class=""><div class="ph"><img src="img/weather04.jpg" alt="Refreshing after rain"></div><figcaption><b>Refreshing after rain</b><span>Clean, bright, renewed</span></figcaption></figure></div></div><div class="wx"><div class="wx-head"><h3>Snow</h3><p>Crisp, magical and peaceful</p><div class="dots"><i style="background:#EEF1FA"></i><i style="background:#D2D6EA"></i><i style="background:#B1C3EE"></i><i style="background:#9CB3DF"></i></div></div><div class="row four"><figure class=""><div class="ph"><img src="img/weather05.jpg" alt="Chilly"></div><figcaption><b>Chilly</b><span>A crisp, cold day</span></figcaption></figure><figure class=""><div class="ph"><img src="img/weather06.jpg" alt="Shivering"></div><figcaption><b>Shivering</b><span>A little cold</span></figcaption></figure><figure class=""><div class="ph"><img src="img/weather07.jpg" alt="Snowy joy"></div><figcaption><b>Snowy joy</b><span>Full of playful energy</span></figcaption></figure><figure class=""><div class="ph"><img src="img/weather08.jpg" alt="Peaceful snow"></div><figcaption><b>Peaceful snow</b><span>Quiet and serene</span></figcaption></figure></div></div><div class="wx"><div class="wx-head"><h3>Night</h3><p>Dreamy, calm and full of wonder</p><div class="dots"><i style="background:#3E3F66"></i><i style="background:#7A6B9B"></i><i style="background:#8E68C2"></i><i style="background:#BC9EE0"></i></div></div><div class="row four"><figure class=""><div class="ph"><img src="img/weather09.jpg" alt="Sleepy"></div><figcaption><b>Sleepy</b><span>Resting peacefully</span></figcaption></figure><figure class=""><div class="ph"><img src="img/weather10.jpg" alt="Dreaming"></div><figcaption><b>Dreaming</b><span>Lost in a sweet dream</span></figcaption></figure><figure class=""><div class="ph"><img src="img/weather11.jpg" alt="Curious at night"></div><figcaption><b>Curious at night</b><span>Wondering what’s next</span></figcaption></figure><figure class=""><div class="ph"><img src="img/weather12.jpg" alt="Magical night"></div><figcaption><b>Magical night</b><span>Big dreams ahead</span></figcaption></figure></div></div><footer class="folio">08</footer></section><section class="page dense"><header class="run"><span>The Journal Cloud</span><span>Environments</span></header><h2>One companion, every kind of sky</h2>
 <div class="grid g4 env"><figure class=""><div class="ph"><img src="img/env07.jpg" alt="Daytime"></div><figcaption><b>Daytime</b></figcaption></figure><figure class=""><div class="ph"><img src="img/env08.jpg" alt="Golden hour"></div><figcaption><b>Golden hour</b></figcaption></figure><figure class=""><div class="ph"><img src="img/env09.jpg" alt="Nighttime"></div><figcaption><b>Nighttime</b></figcaption></figure><figure class=""><div class="ph"><img src="img/envD1.jpg" alt="Travel / daytime"></div><figcaption><b>Travel / daytime</b></figcaption></figure><figure class=""><div class="ph"><img src="img/env01.jpg" alt="Snow"></div><figcaption><b>Snow</b></figcaption></figure><figure class=""><div class="ph"><img src="img/env02.jpg" alt="Rain"></div><figcaption><b>Rain</b></figcaption></figure><figure class=""><div class="ph"><img src="img/env03.jpg" alt="Mixed / drizzle"></div><figcaption><b>Mixed / drizzle</b></figcaption></figure><figure class=""><div class="ph"><img src="img/envD2.jpg" alt="Rainy"></div><figcaption><b>Rainy</b></figcaption></figure><figure class=""><div class="ph"><img src="img/env04.jpg" alt="Night (idle)"></div><figcaption><b>Night (idle)</b></figcaption></figure><figure class=""><div class="ph"><img src="img/env05.jpg" alt="Sleepy night"></div><figcaption><b>Sleepy night</b></figcaption></figure><figure class=""><div class="ph"><img src="img/env06.jpg" alt="Starry"></div><figcaption><b>Starry</b></figcaption></figure><figure class=""><div class="ph"><img src="img/envD3.jpg" alt="Snowy"></div><figcaption><b>Snowy</b></figcaption></figure></div>
 <p class="note">The felt body keeps its cream colour everywhere; the world tints it. Daylight is neutral, golden hour
-adds peach in the creases, night turns the glow lavender, and rain greys the wool down.</p><footer class="folio">09</footer></section><section class="page "><header class="run"><span>The Journal Cloud</span><span>3D model</span></header><h2>Journal as a real-time 3D model</h2>
-<div class="two wide">
-  <div class="hero-card dark"><img src="img/model/t0_75.jpg" alt="3D model, front view"></div>
-  <div class="stack">
-    <p class="lede">For animation, Journal is built as a raymarched 3D shape that runs live in a web browser, on a phone,
-    tablet or computer.</p>
-    <dl class="facts">
-      <dt>Shape</dt><dd>One central mass and 12 felt puffs, blended smoothly, laid out from the hero image</dd>
-      <dt>Surface</dt><dd>Curly felt fibres at three scales, peach creases, a backlit fuzzy rim and glow</dd>
-      <dt>Eyes</dt><dd>Glossy beads set into the felt, with a soft highlight upper left; they blink and squeeze</dd>
-      <dt>Motion</dt><dd>Spring physics for every move: overshoot, follow-through, and puffs that settle on their own</dd>
-    </dl>
-  </div>
-</div>
-<p class="label">Model turnaround</p><div class="row five dark"><figure class=""><div class="ph"><img src="img/model/t0_75.jpg" alt="Front"></div><figcaption><b>Front</b></figcaption></figure><figure class=""><div class="ph"><img src="img/model/t2_75.jpg" alt="3/4 turning right"></div><figcaption><b>3/4 turning right</b></figcaption></figure><figure class=""><div class="ph"><img src="img/model/t3_05.jpg" alt="Side"></div><figcaption><b>Side</b></figcaption></figure><figure class=""><div class="ph"><img src="img/model/t3_50.jpg" alt="Back"></div><figcaption><b>Back</b></figcaption></figure><figure class=""><div class="ph"><img src="img/model/t4_00.jpg" alt="Other side"></div><figcaption><b>Other side</b></figcaption></figure></div><footer class="folio">10</footer></section><section class="page "><header class="run"><span>The Journal Cloud</span><span>In motion</span></header><h2>The 10-second animation</h2>
-<div class="grid g4 anim"><figure class=""><div class="ph"><img src="img/anim/t0_80.jpg" alt="0.8 s · Hover"></div><figcaption><b>0.8 s · Hover</b><span>Idle breathing, a blink</span></figcaption></figure><figure class=""><div class="ph"><img src="img/anim/t2_75.jpg" alt="2.8 s · Turn away"></div><figcaption><b>2.8 s · Turn away</b><span>Eyes slide off to the right</span></figcaption></figure><figure class=""><div class="ph"><img src="img/anim/t3_50.jpg" alt="3.5 s · Back view"></div><figcaption><b>3.5 s · Back view</b><span>No face, puffs roll past</span></figcaption></figure><figure class=""><div class="ph"><img src="img/anim/t4_05.jpg" alt="4.1 s · Eyes return"></div><figcaption><b>4.1 s · Eyes return</b><span>From the left side</span></figcaption></figure><figure class=""><div class="ph"><img src="img/anim/t6_65.jpg" alt="6.7 s · Crouch"></div><figcaption><b>6.7 s · Crouch</b><span>Squash before the rise</span></figcaption></figure><figure class=""><div class="ph"><img src="img/anim/t7_10.jpg" alt="7.1 s · Rise"></div><figcaption><b>7.1 s · Rise</b><span>Stretch, the shadow shrinks</span></figcaption></figure><figure class=""><div class="ph"><img src="img/anim/t8_30.jpg" alt="8.3 s · Glint"></div><figcaption><b>8.3 s · Glint</b><span>Happy squint, light ticks</span></figcaption></figure><figure class=""><div class="ph"><img src="img/anim/t9_20.jpg" alt="9.2 s · Settle"></div><figcaption><b>9.2 s · Settle</b><span>Proud float, then fade</span></figcaption></figure></div>
-<p class="note">Built from the storyboard: a full turn, a crouch and rise, then a glint. Watch it live at
-<a href="https://claude.ai/artifact/W6Gg6RLsoEpavnzvQ5oqBv">claude.ai/artifact/W6Gg6RLsoEpavnzvQ5oqBv</a> (private link; sign in to claude.ai). The rendered files are
-<b>puff_cloud_10s.mp4</b> (1080p, 30 fps) and <b>puff_cloud_10s.gif</b>.</p><footer class="folio">11</footer></section><section class="page "><header class="run"><span>The Journal Cloud</span><span>Usage</span></header><h2>Keeping Journal on model</h2>
-<div class="two usage">
-  <div class="dos">
-    <h3>Do</h3>
-    <ul>
-      <li>Keep the cream felt colour and the warm backlit glow in every scene.</li>
-      <li>Keep the eyes small, glossy and level: about 12% of the width, 20% apart.</li>
-      <li>Show feelings with shape, tilt and light first, then add one light-beam mark.</li>
-      <li>Let the world tint the cloud: peach at golden hour, lavender at night, grey in rain.</li>
-      <li>Move slowly and buoyantly, with an ease in and a soft settle.</li>
-    </ul>
-  </div>
-  <div class="dos dont">
-    <h3>Don't</h3>
-    <ul>
-      <li>Add a mouth, eyebrows, arms or legs.</li>
-      <li>Use hard outlines, flat cartoon colour or a plastic shine on the felt.</li>
-      <li>Stack several symbols at once, or put symbols over the eyes.</li>
-      <li>Use words in place of symbols.</li>
-      <li>Snap between poses or move at one constant speed.</li>
-    </ul>
-  </div>
-</div>
-<div class="closing"><img src="img/react12.jpg" alt=""><p>A little light in every kind of day.</p></div><footer class="folio">12</footer></section></body></html>
+adds peach in the creases, night turns the glow lavender, and rain greys the wool down.</p><footer class="folio">09</footer></section><section class="page "><header class="run"><span>The Journal Cloud</span><span>App icon</span></header><h2>Possible app icons</h2>
+<p class="note">The icon reduces Journal to its silhouette and its glow: a single soft cloud shape lit from inside, with no eyes,
+so it stays readable at small sizes. Four background options are under consideration.</p>
+<div class="row four icons"><figure class="icon"><div class="ic"><img src="img/icon_light.jpg" alt="Light app icon"></div><figcaption><b>Light</b><span>Soft white felt with a warm inner glow</span><span class="hex">#FAF8F6</span></figcaption></figure><figure class="icon"><div class="ic"><img src="img/icon_dark.jpg" alt="Dark app icon"></div><figcaption><b>Dark</b><span>The glow at full strength on near-black</span><span class="hex">#181716</span></figcaption></figure><figure class="icon"><div class="ic"><img src="img/icon_sky.jpg" alt="Sky app icon"></div><figcaption><b>Sky</b><span>The glowing cloud on a clear daytime blue</span><span class="hex">#67A2F4</span></figcaption></figure><figure class="icon"><div class="ic"><img src="img/icon_sunset.jpg" alt="Sunset app icon"></div><figcaption><b>Sunset</b><span>Blue fading to peach: the golden-hour palette</span><span class="hex">#6099DF to #FDBE82</span></figcaption></figure></div>
+<p class="label">At home-screen, settings and notification sizes</p>
+<div class="row four"><div class="sizes"><img src="img/icon_light.jpg" style="width:18mm;height:18mm" alt=""><img src="img/icon_light.jpg" style="width:12mm;height:12mm" alt=""><img src="img/icon_light.jpg" style="width:8mm;height:8mm" alt=""><span>Light</span></div><div class="sizes"><img src="img/icon_dark.jpg" style="width:18mm;height:18mm" alt=""><img src="img/icon_dark.jpg" style="width:12mm;height:12mm" alt=""><img src="img/icon_dark.jpg" style="width:8mm;height:8mm" alt=""><span>Dark</span></div><div class="sizes"><img src="img/icon_sky.jpg" style="width:18mm;height:18mm" alt=""><img src="img/icon_sky.jpg" style="width:12mm;height:12mm" alt=""><img src="img/icon_sky.jpg" style="width:8mm;height:8mm" alt=""><span>Sky</span></div><div class="sizes"><img src="img/icon_sunset.jpg" style="width:18mm;height:18mm" alt=""><img src="img/icon_sunset.jpg" style="width:12mm;height:12mm" alt=""><img src="img/icon_sunset.jpg" style="width:8mm;height:8mm" alt=""><span>Sunset</span></div></div><footer class="folio">10</footer></section></body></html>
