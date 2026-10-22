@@ -20,7 +20,7 @@ pages = []
 
 # 1 cover
 pages.append('''<section class="page cover">
-  <div class="cover-img"><img src="img/hero_black.jpg" alt="The Journal Cloud"></div>
+  <div class="cover-img"><img src="img/hero_white.jpg" alt="The Journal Cloud"></div>
   <div class="cover-text">
     <p class="eyebrow">Character catalog · Volume 01</p>
     <h1>The Journal<br>Cloud</h1>
