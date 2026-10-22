@@ -50,8 +50,9 @@ function resize(w, h) {
   gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, tex, 0);
 }
 const flat = rows => rows.flat();
-function setScene(S, w, h, jitter, weight) {
+function setScene(S, w, h, jitter, weight, lookdev = false) {
   const u = scene.u;
+  gl.uniform1f(u.uLookdev, lookdev ? 1 : 0);
   gl.uniform2f(u.uRes, w, h); gl.uniform2f(u.uJitter, jitter[0], jitter[1]); gl.uniform1f(u.uWeight, weight);
   gl.uniform3fv(u.uCamPos, S.cam.pos); gl.uniform3fv(u.uCamFwd, S.cam.fwd); gl.uniform3fv(u.uCamRight, S.cam.right); gl.uniform3fv(u.uCamUp, S.cam.up);
   gl.uniform1f(u.uFocal, S.focal);
@@ -78,9 +79,10 @@ window.renderAt = (t, o = {}) => {
   let S0 = null;
   for (let i = 0; i < K; i++) {
     const ts = K > 1 ? t + ((i + .5) / K - .5) * shutter / (o.fps || FPS) : t;
-    const S = stateAt(Math.max(0, Math.min(DUR, ts)));
+    const S = Object.assign({}, stateAt(Math.max(0, Math.min(DUR, ts))));
+    if (o.lookdev) { S.cam = lookAt([0.08, 0.02, 5.9], [0.08, -0.06, 0], 0); S.focal = o.focal || 2.45; }
     if (i === Math.floor(K / 2) || !S0) S0 = S;
-    setScene(S, w, h, K > 1 ? r2(i) : [0, 0], 1 / K);
+    setScene(S, w, h, K > 1 ? r2(i) : [0, 0], 1 / K, !!o.lookdev);
     gl.drawArrays(gl.TRIANGLES, 0, 3);
   }
   gl.disable(gl.BLEND);
@@ -90,8 +92,8 @@ window.renderAt = (t, o = {}) => {
   gl.uniform2f(post.u.uRes, w, h); gl.uniform1f(post.u.uSeed, (t * 977.3) % 113); gl.uniform1f(post.u.uGrain, o.grain ?? 0.022);
   gl.drawArrays(gl.TRIANGLES, 0, 3);
   // final composite: blur dissolve from/to warm haze
-  const P = stateAt(t).post, sc = w / 1920;
-  ctx.save(); ctx.fillStyle = 'rgb(255,226,187)'; ctx.fillRect(0, 0, w, h);
+  const P = o.lookdev ? { vis: 1, blur: 0, scale: 1 } : stateAt(t).post, sc = w / 1920;
+  ctx.save(); ctx.fillStyle = o.lookdev ? '#000' : 'rgb(255,226,187)'; ctx.fillRect(0, 0, w, h);
   ctx.globalAlpha = P.vis; ctx.filter = P.blur > .05 ? `blur(${(P.blur * sc).toFixed(2)}px)` : 'none';
   ctx.translate(w / 2, h / 2); ctx.scale(P.scale, P.scale); ctx.translate(-w / 2, -h / 2);
   ctx.drawImage(glc, 0, 0); ctx.restore();

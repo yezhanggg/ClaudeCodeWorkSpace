@@ -33,7 +33,7 @@ const frameOf = async (page, t, o) => {
   const url = await page.evaluate(([t, o]) => window.renderAt(t, o), [t, o]);
   return Buffer.from(url.slice(url.indexOf(',') + 1), 'base64');
 };
-const opts = extra => ({ w, samples, fps, ...(grain !== undefined ? { grain } : {}), ...extra });
+const opts = extra => ({ w, samples, fps, lookdev: !!args.lookdev, ...(grain !== undefined ? { grain } : {}), ...extra });
 
 if (args.sheet || args.strip || args.stills) {
   const page = await openPage();

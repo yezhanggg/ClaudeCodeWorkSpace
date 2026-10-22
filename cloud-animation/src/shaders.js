@@ -7,7 +7,7 @@ uniform vec3 uCloudPos; uniform mat3 uCloudRot; uniform vec3 uCloudScale; unifor
 uniform vec3 uBodyC, uBodyR; uniform vec4 uLobe[12]; uniform float uK;
 uniform vec3 uEyeP[2]; uniform mat3 uEyeB[2]; uniform vec3 uEyeR[2]; uniform float uEyeCurve;
 uniform float uFloorY, uGlow, uDrift, uSunSwell;
-uniform vec2 uSweep; uniform vec4 uSpark;
+uniform vec2 uSweep; uniform vec4 uSpark; uniform float uLookdev;
 out vec4 outColor;
 
 // ---------- noise ----------
@@ -39,7 +39,7 @@ float feltBase(vec3 q){
   for (int i = 0; i < 12; i++) d = smin(d, length(q - uLobe[i].xyz) - uLobe[i].w, uK);
   return d;
 }
-float feltDisp(vec3 q){ return .011*(vnoise(q*4.6) - .5) + .0045*(vnoise(q*10.5 + 7.3) - .5); }
+float feltDisp(vec3 q){ return .006*(vnoise(q*5.) - .5) + .0025*(vnoise(q*14. + 7.3) - .5); }
 float eyeDist(vec3 q){
   float d = 1e3;
   for (int i = 0; i < 2; i++){ vec3 e = uEyeB[i]*(q - uEyeP[i]); float bx = clamp(e.x, -uEyeR[i].x*1.25, uEyeR[i].x*1.25); e.y += uEyeCurve*bx*bx; d = min(d, sdEll(e, uEyeR[i])); }
@@ -49,7 +49,7 @@ float eyeDist(vec3 q){
 vec2 mapQ(vec3 q){
   float d = feltBase(q);
   if (d < .09) d += feltDisp(q);
-  vec3 ec = q - vec3(.26, -.06, .72);
+  vec3 ec = q - vec3(.24, -.12, .60);
   float de = dot(ec, ec) < .40 ? eyeDist(q) : 1e3;          // eyes only near the face
   return de < d ? vec2(de*uMinScale, 1.) : vec2(d*uMinScale, 0.);
 }
@@ -65,33 +65,37 @@ vec3 eyeNormal(vec3 p){
 float calcAO(vec3 p, vec3 n){
   float occ = 0., sca = 1.;
   for (int i = 0; i < 5; i++){
-    float h = .02 + .11*float(i);
+    float h = .03 + .14*float(i);
     float d = map(p + n*h).x;
-    occ += (h - d)*sca; sca *= .78;
+    occ += (h - d)*sca; sca *= .80;
   }
-  return clamp(1. - 1.6*occ, 0., 1.);
+  return clamp(1. - 2.0*occ, 0., 1.);
 }
-// felt fibres: thin curly ridges where noise crosses its mid level
+// needle felt: short curly fibres at three scales, as ridges where noise crosses its mid level; ~0.25 on average, 1 on a fibre
+float ridge(vec3 q){ return 1. - abs(2.*vnoise(q) - 1.); }
 float fibres(vec3 q){
-  float a = 1. - abs(2.*vnoise(q*vec3(58., 46., 58.)) - 1.), b = 1. - abs(2.*vnoise(q*vec3(97., 121., 97.) + 3.1) - 1.);
-  return pow(a, 3.)*.45 + pow(b, 3.)*.45 + .35*vnoise(q*190.);
+  vec3 w = q + .025*(vec3(vnoise(q*6.), vnoise(q*6. + 3.), vnoise(q*6. + 9.)) - .5);     // curl
+  float a = pow(ridge(w*vec3(40., 52., 40.)), 3.);
+  float b = pow(ridge(w*vec3(95., 78., 95.) + 5.), 3.);
+  float c = pow(ridge(w*vec3(170., 150., 170.) + 11.), 2.);
+  return .35*a + .35*b + .30*c;
 }
 
 // ---------- the world ----------
-const vec3 HAZE = vec3(.93, .80, .66);
+const vec3 HAZE = vec3(.88, .74, .60);
 vec3 backdrop(vec3 rd, float mirror){
   float e = rd.y, a = atan(rd.x, -rd.z);
-  vec3 top = vec3(.30, .44, .64), mid = vec3(.55, .63, .75), low = vec3(.92, .79, .65);
+  vec3 top = vec3(.30, .44, .64), mid = vec3(.52, .61, .74), low = vec3(.90, .76, .62);
   vec3 c = mix(HAZE, low, smoothstep(.0, .07, e));
-  c = mix(c, mid, smoothstep(.06, .22, e));
+  c = mix(c, mid, smoothstep(.05, .18, e));
   c = mix(c, top, smoothstep(.20, .60, e));
   // the sun, low and behind Puff's right shoulder
   vec2 sd = vec2(a - .20, (e - .035)*1.7);
   c += vec3(1., .78, .50)*(.30 + uSunSwell)*exp(-dot(sd, sd)*10.) + vec3(1., .86, .62)*.10*exp(-dot(sd, sd)*2.);
   // far cumulus: puffy masses sitting on the horizon, lit warm on top, soft as if out of focus
   float n = fbm2(vec2(a*3.1 + uDrift, e*8.0 - .2));
-  float band = smoothstep(.36, .08, e)*smoothstep(-.02, .03, e);
-  float cl = smoothstep(.36, .60, n*1.08 - e*1.25 + .13);
+  float band = smoothstep(.20, .04, e)*smoothstep(-.02, .03, e);
+  float cl = smoothstep(.36, .60, n*1.08 - e*2.2 + .16);
   float lit = smoothstep(.42, .80, n + e*1.6) + .45*exp(-dot(sd, sd)*2.5);
   vec3 cloudLit = mix(vec3(.74, .70, .76), vec3(1., .88, .72), clamp(lit, 0., 1.));
   c = mix(c, cloudLit, cl*band*.92);
@@ -107,15 +111,15 @@ vec3 floorColor(vec3 p, vec3 rd, float t){
   float fres = .08 + .92*pow(1. - clamp(-rd.y, 0., 1.), 5.);
   // a glossy warm table, with long soft streaks
   float s = vnoise2(vec2(p.x*.35, p.z*4.)) + .5*vnoise2(vec2(p.x*.9, p.z*11.));
-  vec3 base = vec3(.70, .60, .51)*(.90 + .1*s)*mix(.86, 1., smoothstep(2., 14., t));
-  vec3 c = mix(base, refl, clamp(fres*.85 + .18, 0., 1.));
+  vec3 base = vec3(.60, .50, .42)*(.90 + .1*s)*mix(.80, 1., smoothstep(2., 14., t));
+  vec3 c = mix(base, refl, clamp(fres*.70 + .12, 0., 1.));
   // the cloud's shadow and warm glow pool, softer and fainter as it rises
   float h = max(uCloudPos.y - uFloorY - .55, .05);
   vec2 dxz = (p.xz - uCloudPos.xz)/vec2(1.05 + .35*h, .55 + .25*h);
   float r2 = dot(dxz, dxz);
   c *= 1. - .50/(1. + 1.2*h)*exp(-r2*2.2);
   c += vec3(1., .80, .52)*.10*uGlow*exp(-r2*.45)/(1. + .8*h);
-  return mix(c, mix(HAZE, refl, .5), 1. - exp(-t*.02));
+  return mix(c, mix(HAZE, refl, .5), 1. - exp(-t*.016));
 }
 // ---------- capsule for the glint ticks ----------
 float sdSeg(vec2 p, vec2 a, vec2 b){ vec2 pa = p - a, ba = b - a; float h = clamp(dot(pa, ba)/dot(ba, ba), 0., 1.); return length(pa - ba*h); }
@@ -129,14 +133,15 @@ void main(){
   // background: floor or sky
   float tFloor = rd.y < 0. ? (uFloorY - ro.y)/rd.y : 1e9;
   vec3 col;
-  if (abs(rd.y) < .022){
+  if (uLookdev > .5){ col = vec3(0.); tFloor = 1e9; }
+  else if (abs(rd.y) < .022){
     vec3 rf = normalize(vec3(rd.x, min(rd.y, -.0005), rd.z)), rs = normalize(vec3(rd.x, max(rd.y, .0005), rd.z));
     float tf = (uFloorY - ro.y)/rf.y;
     col = mix(floorColor(ro + rf*tf, rf, tf), backdrop(rs, 1.), smoothstep(-.022, .022, rd.y));
   } else col = tFloor < 1e8 ? floorColor(ro + rd*tFloor, rd, tFloor) : backdrop(rd, 1.);
 
   // cloud: march only inside the bounding sphere (it carries the glow too)
-  vec3 oc = ro - uCloudPos; float R = 1.75*uMaxScale + .35;
+  vec3 oc = ro - uCloudPos; float R = 1.75*uMaxScale + .85;
   float b = dot(oc, rd), c = dot(oc, oc) - R*R, disc = b*b - c;
   if (disc > 0.){
     float sq = sqrt(disc), t = max(-b - sq, 0.), tEnd = -b + sq;
@@ -155,20 +160,20 @@ void main(){
       vec3 q = toLocal(p);
       if (mat < .5){
         vec3 n = calcNormal(p);
+        // fine fuzz in the normal, so the felt catches light the way fibres do
+        vec3 nf = normalize(n + .09*(vec3(vnoise(q*140.), vnoise(q*140. + 4.), vnoise(q*140. + 8.)) - .5));
         float ao = calcAO(p, n);
-        vec3 Lk = normalize(vec3(-.45, .55, .72));
-        float dk = clamp((dot(n, Lk) + .6)/1.6, 0., 1.);
-        float sky = .55 + .45*n.y, bounce = clamp(-n.y, 0., 1.);
-        float ndv = clamp(dot(n, -rd), 0., 1.), rim = pow(1. - ndv, 2.4);
+        vec3 Lk = normalize(vec3(-.18, .80, .58));
+        float dk = clamp((dot(nf, Lk) + .35)/1.35, 0., 1.);                 // a soft top light, as in the picture
+        float sky = .45 + .55*n.y, bounce = clamp(-n.y, 0., 1.);
+        float ndv = clamp(dot(n, -rd), 0., 1.), rim = pow(1. - ndv, 1.3);
         float fib = fibres(q);
-        float hue = vnoise(q*1.7 + 2.);
-        float clump = vnoise(q*13. + 5.);
-        vec3 alb = mix(vec3(.99, .92, .89), vec3(1., .94, .86), hue)*(.92 + .06*clump + .08*fib);
-        vec3 occ = mix(vec3(.80, .63, .55), vec3(1.), ao);                 // warm creases, like light soaking into wool
-        vec3 lit = vec3(1., .96, .92)*.78*dk + vec3(.82, .85, .94)*.34*sky + vec3(1., .74, .45)*.60*bounce;
+        vec3 alb = vec3(1., .93, .92)*(.93 + .10*fib);
+        vec3 occ = mix(vec3(.66, .50, .42), vec3(1.), ao);                 // peach creases, like light soaking into wool
+        vec3 lit = vec3(1., .97, .95)*.78*dk + vec3(.98, .94, .96)*.40*sky + vec3(1., .78, .50)*.34*bounce;
         col = alb*lit*occ;
-        col += vec3(1., .91, .76)*rim*(.85 + .2*fib)*uGlow;                // light scattering through the fuzzy edge
-        col += vec3(1., .90, .78)*.07*uGlow*ao;                             // the felt's own glow
+        col += vec3(1., .88, .70)*rim*(.80 + .25*fib)*uGlow;                 // backlit fuzz: the whole silhouette glows
+        col += vec3(1., .92, .80)*.06*uGlow;                                 // the felt's own glow
         // 21st Light Sweep: a 20° band of sheen crossing the felt
         float band = (q.x + q.y*.364 - uSweep.x)/.27;
         col += vec3(1., .97, .90)*uSweep.y*exp(-band*band)*(.6 + .4*ndv);
@@ -176,20 +181,22 @@ void main(){
         vec3 n = eyeNormal(p);
         vec3 r = reflect(rd, n);
         float ndv = clamp(dot(n, -rd), 0., 1.), fres = .04 + .96*pow(1. - ndv, 5.);
-        vec3 env = backdrop(r, 1.)*.30;
-        col = vec3(.040, .030, .026) + env*fres*.5;
-        // a softbox highlight, upper left, and a faint warm kicker lower right
-        vec3 Lb = normalize(vec3(-.55, .62, .56));
-        col += vec3(1., .97, .93)*smoothstep(.950, .985, dot(r, Lb))*.85;
-        col += vec3(1., .85, .62)*.25*smoothstep(.90, .99, dot(r, normalize(vec3(.6, -.25, .75))));
+        vec3 env = uLookdev > .5 ? vec3(.10, .09, .08) : backdrop(r, 1.)*.25;
+        col = vec3(.045, .036, .030) + env*fres;
+        // the softbox, upper left, and a little warm bounce from below
+        vec3 Lb = normalize(vec3(-.50, .62, .60));
+        col += vec3(1., .98, .95)*smoothstep(.86, .95, dot(r, Lb))*.95;
+        col += vec3(1., .88, .70)*.20*smoothstep(.80, .97, dot(r, normalize(vec3(.4, -.5, .75))));
       }
     } else {
-      // fibres standing out past the silhouette, then the glow
+      // a soft fibrous fringe past the silhouette, then the halo: bright and tight at the edge, wide and faint beyond
       vec3 qm = toLocal(pmin);
-      float f = fibres(qm*1.35);
-      float fuzz = smoothstep(.030, .0, dmin)*(.30 + .70*f);
-      col = mix(col, warm*1.02, clamp(fuzz, 0., 1.)*.9);
-      col += vec3(1., .84, .58)*.20*uGlow*exp(-max(dmin, 0.)*8.5);
+      float len = .5 + .5*vnoise(qm*22.), f = clamp(fibres(qm*2.)*2.2, 0., 1.);
+      float fringe = smoothstep(.030, 0., dmin)*.75 + smoothstep(.045*len, .004, dmin)*(.20 + .30*f);
+      col = mix(col, vec3(1., .96, .86), clamp(fringe, 0., 1.));
+      float dd = max(dmin, 0.);
+      col += vec3(1., .92, .72)*.55*uGlow*exp(-dd/.22);
+      col += vec3(1., .82, .52)*.16*uGlow*exp(-dd/.50)*smoothstep(1.2, .3, dd);
     }
   }
 

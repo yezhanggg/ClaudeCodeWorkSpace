@@ -31,24 +31,27 @@ function blinkAt(t, t0, d = .17) {
 }
 
 // ---------- the cloud: puffs in local space (x right, y up, z toward camera), radius in w ----------
-const BODY = { c: [0.02, -0.28, -0.05], r: [1.12, 0.52, 0.80] };
+// Layout measured from the reference image (1 local unit ≈ 475 px of the 1536-px reference). The face is a wide, slightly
+// flattened front mass; the top dome sits on it; the left, right and upper-right puffs and three bottom bumps match the picture;
+// four back puffs give the turn a body.
+const BODY = { c: [0.02, 0.02, -0.04], r: [0.84, 0.78, 0.70] };   // the central mass: the dome and the face are one puff
 const LOBES = [
-  [0.22, -0.16, 0.16, 0.70],   // face puff
-  [-0.18, 0.22, -0.12, 0.60],  // big top dome
-  [0.56, 0.30, -0.12, 0.42],   // upper right
-  [1.00, -0.14, 0.02, 0.36],   // right
-  [-0.86, -0.05, 0.02, 0.48],  // left
-  [0.18, 0.12, -0.48, 0.55],   // back dome
-  [-0.55, -0.08, -0.45, 0.46], // back left
-  [0.62, -0.10, -0.44, 0.44],  // back right
-  [-0.52, -0.38, 0.30, 0.38],  // front lower left
-  [0.78, -0.40, 0.28, 0.34],   // front lower right
-  [-0.80, 0.20, -0.26, 0.38],  // side left, mid depth
-  [0.86, 0.14, -0.24, 0.36],   // side right, mid depth
+  [-0.22, 0.30, -0.10, 0.60],  // the dome's apex, up and to the left as in the picture
+  [-0.93, -0.10, 0.00, 0.44],  // left
+  [0.68, 0.40, 0.00, 0.38],    // upper right
+  [0.95, -0.10, 0.02, 0.38],   // right
+  [-0.50, -0.46, 0.16, 0.34],  // bottom left
+  [0.14, -0.50, 0.18, 0.36],   // bottom middle
+  [0.72, -0.42, 0.14, 0.30],   // bottom right
+  [0.00, 0.12, -0.55, 0.55],   // back dome
+  [-0.62, -0.12, -0.45, 0.40], // back left
+  [0.66, -0.08, -0.45, 0.38],  // back right
+  [0.08, -0.48, -0.40, 0.30],  // back bottom
+  [-0.55, 0.28, -0.30, 0.32],  // back upper left
 ];
-const SMOOTH_K = 0.085;
-const EYES = [[-0.06, -0.07], [0.57, -0.07]];      // where the eyes sit on the face, in local x, y
-const EYE_R = [0.074, 0.165, 0.055];
+const SMOOTH_K = 0.11;
+const EYES = [[-0.04, -0.13], [0.56, -0.13]];     // where the eyes sit on the face, in local x, y
+const EYE_R = [0.068, 0.142, 0.05];
 
 // ---------- keyed targets (the springs chase these) ----------
 const T = {
@@ -120,7 +123,8 @@ function seatEye(x, y, lobes) {
   let p = [x, y, 1.6];
   for (let i = 0; i < 80; i++) { const d = feltSDF(p, lobes); p[2] -= d; if (Math.abs(d) < 1e-5) break; }
   const e = 1e-4, g = [0, 1, 2].map(a => { const p1 = p.slice(), p2 = p.slice(); p1[a] += e; p2[a] -= e; return feltSDF(p1, lobes) - feltSDF(p2, lobes); });
-  const n = norm(g), up = norm([0 - n[0] * n[1], 1 - n[1] * n[1], 0 - n[2] * n[1]]), xa = cross(up, n);
+  const ns = norm(g), n = norm([ns[0] * .45, ns[1] * .45, ns[2] * .45 + .55]);   // beads face mostly forward, like eyes set into a plush
+  const up = norm([0 - n[0] * n[1], 1 - n[1] * n[1], 0 - n[2] * n[1]]), xa = cross(up, n);
   return { p, n, basis: [xa, up, n] };          // rows: eye-space x, y, z (z = out of the felt)
 }
 
@@ -167,13 +171,13 @@ function stateAt(t, W = 1920, H = 1080) {
   const eyeOpen = Math.max(0.09, (1 - blink) * (1 - squeeze));
   const eyes = EYES.map(([x, y], i) => {
     const e = seatEye(x + s.lx * 0.11, y + s.ly * 0.14 + (1 - eyeOpen) * 0.03, lobes);
-    const inset = EYE_R[2] * .25;
+    const inset = EYE_R[2] * .30;
     return { p: e.p.map((v, a) => v - e.n[a] * inset), basis: e.basis, r: [EYE_R[0] * (1 + .12 * (1 - eyeOpen)), EYE_R[1] * eyeOpen, EYE_R[2]] };
   });
   const cloudPos = [0.0, s.y + bob, 0];
   // camera: slow push-in and drift, tilts up after the cloud on a heavy, critically damped spring
-  const camPos = [0.10 * wob(t, .07, .1), -0.30 + 0.30 * s.cam, lerp(5.95, 5.50, ease(t / DUR))];
-  const camTgt = [0.04 * wob(t, .05, .3), -0.08 + 0.78 * s.cam, 0];
+  const camPos = [0.10 * wob(t, .07, .1), 0.40 + 0.30 * s.cam, lerp(5.95, 5.50, ease(t / DUR))];
+  const camTgt = [0.04 * wob(t, .05, .3), -0.02 + 0.78 * s.cam, 0];
   const cam = lookAt(camPos, camTgt, 0.006 * wob(t, .11));
   const focal = 1 / (2 * Math.tan(15 * DEG));   // 30° vertical field of view
   const glintK = seg(t, T.glint, T.glint + .7);
