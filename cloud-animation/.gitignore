@@ -1,0 +1,4 @@
+# render intermediates (hundreds of MB); only the final MP4 and GIF in out/ are kept
+out/*
+!out/puff_cloud_10s.mp4
+!out/puff_cloud_10s.gif
