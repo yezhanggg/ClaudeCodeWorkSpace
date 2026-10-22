@@ -1,0 +1,272 @@
+<title>Puff the Felt Cloud</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DynaPuff:wght@500;600&family=Figtree:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  /* Layout: a screening-room column. The film sits on top, with the transport and your storyboard's panel markers beneath it. */
+  :root {
+    --bg: #16120f;
+    --surface: #221c18;
+    --line: #3b322b;
+    --fg: #f4ebe1;
+    --muted: #a99a8c;
+    --glow: #f5c993;
+    --haze: #ffe2bb;
+    --display: 'DynaPuff', 'Nunito', ui-rounded, system-ui, sans-serif;
+    --body: 'Figtree', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+    color-scheme: dark;
+  }
+  html, body { background: var(--bg); color: var(--fg); }
+  body {
+    font-family: var(--body); font-size: 15px; line-height: 1.5;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-block: 20px 32px;
+  }
+  main { max-width: 1120px; margin: 0 auto; display: grid; gap: 18px; }
+  header { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 20px; }
+  h1 { font-family: var(--display); font-weight: 600; font-size: clamp(1.6rem, 4vw, 2.3rem); line-height: 1.1; margin: 0; text-wrap: balance; color: var(--fg); }
+  h1 span { color: var(--glow); }
+  .sub { margin: 0; color: var(--muted); max-width: 52ch; }
+
+  .stage {
+    position: relative; width: 100%; max-width: 100%; aspect-ratio: 16 / 9; border-radius: 14px; overflow: hidden;
+    background: var(--haze); box-shadow: 0 0 0 1px var(--line), 0 18px 60px -20px rgba(245, 201, 147, .25);
+  }
+  .stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; transform-origin: 50% 50%; }
+  .stage .note {
+    position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; text-align: center;
+    background: var(--surface); color: var(--fg); font-size: 15px;
+  }
+
+  .transport { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 14px; }
+  .btn {
+    appearance: none; border: 1px solid var(--line); background: var(--surface); color: var(--fg);
+    border-radius: 999px; min-width: 48px; height: 48px; display: inline-grid; place-items: center; cursor: pointer;
+    font: 500 14px/1 var(--body); padding: 0 14px;
+  }
+  .btn:hover { border-color: var(--glow); }
+  .btn:focus-visible, input:focus-visible { outline: 2px solid var(--glow); outline-offset: 3px; }
+  .btn svg { width: 18px; height: 18px; fill: var(--fg); }
+  .btn svg[hidden] { display: none; }
+  .btn[aria-pressed="true"] { background: var(--glow); color: var(--bg); border-color: var(--glow); }
+
+  .track { position: relative; padding-block: 10px 18px; min-width: 0; }
+  input[type=range] { -webkit-appearance: none; appearance: none; width: 100%; height: 28px; background: transparent; margin: 0; cursor: pointer; }
+  input[type=range]::-webkit-slider-runnable-track { height: 6px; border-radius: 3px; background: linear-gradient(to right, var(--glow) var(--p, 0%), var(--line) var(--p, 0%)); }
+  input[type=range]::-moz-range-track { height: 6px; border-radius: 3px; background: var(--line); }
+  input[type=range]::-moz-range-progress { height: 6px; border-radius: 3px; background: var(--glow); }
+  input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; margin-top: -8px; border-radius: 50%; background: var(--fg); border: 3px solid var(--glow); }
+  input[type=range]::-moz-range-thumb { width: 16px; height: 16px; border-radius: 50%; background: var(--fg); border: 3px solid var(--glow); }
+  .ticks { position: absolute; left: 11px; right: 11px; bottom: 0; height: 12px; pointer-events: none; }
+  .ticks i { position: absolute; top: 0; width: 1px; height: 8px; background: var(--muted); }
+  .ticks b { position: absolute; top: 0; transform: translateX(-50%); font: 500 10px/1 var(--mono); color: var(--muted); padding-top: 0; }
+  .tc { font: 500 14px/1 var(--mono); font-variant-numeric: tabular-nums; color: var(--fg); white-space: nowrap; }
+  .tc small { color: var(--muted); font-size: 12px; }
+
+  .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+  .panels { display: flex; flex-wrap: wrap; gap: 8px; }
+  .panel {
+    appearance: none; cursor: pointer; display: inline-flex; align-items: baseline; gap: 8px; min-height: 44px;
+    padding: 10px 14px; border-radius: 10px; border: 1px solid var(--line); background: transparent; color: var(--fg); font: 500 14px/1.2 var(--body);
+  }
+  .panel:hover { border-color: var(--glow); }
+  .panel .n { font: 500 11px/1 var(--mono); letter-spacing: .04em; color: var(--glow); }
+  .panel .t { font: 400 12px/1 var(--mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+  .panel.on { background: var(--surface); border-color: var(--glow); }
+  .speed { display: inline-flex; gap: 6px; }
+  .status { margin: 0; font: 400 12px/1.5 var(--mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+  .eyebrow { margin: 0 0 8px; font: 500 11px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+  @media (max-width: 520px) { .transport { grid-template-columns: auto minmax(0, 1fr); } .tc { grid-column: 1 / -1; justify-self: end; } }
+</style>
+
+<main>
+  <header>
+    <h1>Puff the <span>Felt Cloud</span></h1>
+    <p class="sub">A 10-second turn, rise and glint, rendered live on this device.</p>
+  </header>
+
+  <div class="stage" id="stage">
+    <canvas id="film" aria-label="Animation of a glowing felt cloud with two black eyes"></canvas>
+  </div>
+
+  <div class="transport">
+    <button class="btn" id="play" aria-label="Pause" title="Play or pause (space)">
+      <svg viewBox="0 0 24 24" id="icoPause"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+      <svg viewBox="0 0 24 24" id="icoPlay" hidden><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg>
+    </button>
+    <div class="track">
+      <input type="range" id="scrub" min="0" max="10" step="0.01" value="0.6" aria-label="Time in seconds">
+      <div class="ticks" id="ticks"></div>
+    </div>
+    <div class="tc" id="tc">0.60 s <small>/ 10.00 s</small></div>
+  </div>
+
+  <div>
+    <p class="eyebrow">Jump to a storyboard panel</p>
+    <div class="row">
+      <div class="panels" id="panels"></div>
+      <div class="speed" role="group" aria-label="Playback speed">
+        <button class="btn" id="slow" aria-pressed="false">0.5×</button>
+        <button class="btn" id="normal" aria-pressed="true">1×</button>
+      </div>
+    </div>
+  </div>
+
+  <p class="status" id="status">Starting the renderer…</p>
+</main>
+
+<script src="src/timeline.js"></script>
+<script src="src/shaders.js"></script>
+<script>
+(() => {
+  // Panels from the storyboard image, and where each one lands in the timeline (seconds).
+  const PANELS = [
+    { n: '1', name: 'Hover', t: 0.45 },
+    { n: '2–4', name: 'Turn away', t: 1.85 },
+    { n: '5–7', name: 'Back view', t: 3.15 },
+    { n: '8', name: 'Eyes return', t: 3.85 },
+    { n: '9', name: 'Rise', t: 6.2 },
+    { n: '10', name: 'Glint', t: 8.05 },
+  ];
+  const $ = id => document.getElementById(id);
+  const stage = $('stage'), cv = $('film'), scrub = $('scrub'), tc = $('tc'), status = $('status');
+
+  const panelsEl = $('panels'), ticks = $('ticks');
+  PANELS.forEach((p, i) => {
+    const b = document.createElement('button');
+    b.className = 'panel'; b.id = 'panel' + i;
+    b.innerHTML = `<span class="n">${p.n}</span><span>${p.name}</span><span class="t">${p.t.toFixed(1)} s</span>`;
+    b.addEventListener('click', () => { t = p.t; setPlaying(true); });
+    panelsEl.appendChild(b);
+    const tick = document.createElement('i'); tick.style.left = (p.t / DUR * 100) + '%'; ticks.appendChild(tick);
+  });
+
+  function fail(msg) { stage.insertAdjacentHTML('beforeend', `<div class="note">${msg}</div>`); status.textContent = msg; }
+  const gl = cv.getContext('webgl2', { antialias: false, alpha: false, premultipliedAlpha: false, powerPreference: 'high-performance' });
+  if (!gl) { fail('This browser has no WebGL2, which the animation needs. Safari on iPadOS 15 or later supports it.'); return; }
+  const floatOK = !!gl.getExtension('EXT_color_buffer_float');
+
+  function compile(type, src) {
+    const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s);
+    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s));
+    return s;
+  }
+  function program(fs) {
+    const p = gl.createProgram();
+    gl.attachShader(p, compile(gl.VERTEX_SHADER, QUAD_VS)); gl.attachShader(p, compile(gl.FRAGMENT_SHADER, fs));
+    gl.bindAttribLocation(p, 0, 'aPos'); gl.linkProgram(p);
+    if (!gl.getProgramParameter(p, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(p));
+    const u = {}, n = gl.getProgramParameter(p, gl.ACTIVE_UNIFORMS);
+    for (let i = 0; i < n; i++) { const name = gl.getActiveUniform(p, i).name.replace(/\[0\]$/, ''); u[name] = gl.getUniformLocation(p, name); }
+    return { p, u };
+  }
+  let scene, post;
+  try { scene = program(SCENE_FS); post = program(POST_FS); }
+  catch (e) { fail('The renderer could not start on this device: ' + String(e.message).slice(0, 160)); return; }
+  const vbo = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+  gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+
+  let fbo = null, tex = null, size = [0, 0];
+  function resize(w, h) {
+    if (size[0] === w && size[1] === h) return;
+    size = [w, h]; cv.width = w; cv.height = h;
+    if (tex) { gl.deleteTexture(tex); gl.deleteFramebuffer(fbo); }
+    tex = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, tex);
+    gl.texImage2D(gl.TEXTURE_2D, 0, floatOK ? gl.RGBA16F : gl.RGBA8, w, h, 0, gl.RGBA, floatOK ? gl.HALF_FLOAT : gl.UNSIGNED_BYTE, null);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+    fbo = gl.createFramebuffer(); gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
+    gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, tex, 0);
+  }
+  const flat = rows => rows.flat();
+  function setScene(S, w, h) {
+    const u = scene.u;
+    gl.uniform2f(u.uRes, w, h); gl.uniform2f(u.uJitter, 0, 0); gl.uniform1f(u.uWeight, 1);
+    gl.uniform3fv(u.uCamPos, S.cam.pos); gl.uniform3fv(u.uCamFwd, S.cam.fwd); gl.uniform3fv(u.uCamRight, S.cam.right); gl.uniform3fv(u.uCamUp, S.cam.up);
+    gl.uniform1f(u.uFocal, S.focal);
+    gl.uniform3fv(u.uCloudPos, S.cloud.pos); gl.uniformMatrix3fv(u.uCloudRot, true, flat(S.cloud.rot));
+    gl.uniform3fv(u.uCloudScale, S.cloud.scale);
+    gl.uniform1f(u.uMinScale, Math.min(...S.cloud.scale)); gl.uniform1f(u.uMaxScale, Math.max(...S.cloud.scale)); gl.uniform1f(u.uTwist, S.cloud.twist);
+    gl.uniform3fv(u.uBodyC, S.body.c); gl.uniform3fv(u.uBodyR, S.body.r); gl.uniform4fv(u.uLobe, flat(S.lobes)); gl.uniform1f(u.uK, S.k);
+    gl.uniform3fv(u.uEyeP, flat(S.eyes.map(e => e.p))); gl.uniformMatrix3fv(u.uEyeB, true, flat(S.eyes.map(e => flat(e.basis))));
+    gl.uniform3fv(u.uEyeR, flat(S.eyes.map(e => e.r))); gl.uniform1f(u.uEyeCurve, S.eyeCurve);
+    gl.uniform1f(u.uFloorY, S.floorY); gl.uniform1f(u.uGlow, S.glow); gl.uniform1f(u.uDrift, S.drift); gl.uniform1f(u.uSunSwell, S.sunSwell);
+    gl.uniform2fv(u.uSweep, S.sweep);
+    const sc = w / 1920; gl.uniform4f(u.uSpark, S.spark[0] * sc, S.spark[1] * sc, S.spark[2] * sc, S.spark[3]);
+  }
+
+  // One frame: scene into a buffer, then the post pass (tone, vignette, grain). The 21st Blur Dissolve in and out of
+  // warm haze is done with CSS on the canvas, over the haze-coloured stage.
+  let renderW = 0;
+  function draw(time) {
+    const w = renderW, h = Math.round(w * 9 / 16);
+    resize(w, h);
+    const S = stateAt(time);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, fbo); gl.viewport(0, 0, w, h); gl.disable(gl.BLEND);
+    gl.useProgram(scene.p); setScene(S, w, h); gl.drawArrays(gl.TRIANGLES, 0, 3);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null); gl.viewport(0, 0, w, h);
+    gl.useProgram(post.p);
+    gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, tex); gl.uniform1i(post.u.uAcc, 0);
+    gl.uniform2f(post.u.uRes, w, h); gl.uniform1f(post.u.uSeed, (time * 977.3) % 113); gl.uniform1f(post.u.uGrain, 0.014);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+    const P = S.post, blurPx = P.blur * cv.clientWidth / 1920;
+    cv.style.opacity = P.vis.toFixed(3);
+    cv.style.filter = blurPx > .05 ? `blur(${blurPx.toFixed(2)}px)` : 'none';
+    cv.style.transform = P.scale > 1.0001 ? `scale(${P.scale.toFixed(4)})` : 'none';
+  }
+
+  // Resolution adapts to the device: start sharp, step down if frames take too long, step back up when there is headroom.
+  const maxW = () => Math.max(480, Math.min(1600, Math.round(stage.clientWidth * Math.min(window.devicePixelRatio || 1, 2))));
+  renderW = Math.min(960, maxW());
+
+  let t = 0.6, playing = !matchMedia('(prefers-reduced-motion: reduce)').matches, speed = 1, last = 0;
+  const deltas = [];
+  function setPlaying(on) {
+    playing = on; last = 0;
+    $('play').setAttribute('aria-label', on ? 'Pause' : 'Play');
+    $('icoPause').hidden = !on; $('icoPlay').hidden = on;
+    dirty = true;
+  }
+  function setSpeed(s) { speed = s; $('slow').setAttribute('aria-pressed', String(s === .5)); $('normal').setAttribute('aria-pressed', String(s === 1)); }
+  $('play').addEventListener('click', () => setPlaying(!playing));
+  $('slow').addEventListener('click', () => setSpeed(.5));
+  $('normal').addEventListener('click', () => setSpeed(1));
+  scrub.addEventListener('input', () => { t = +scrub.value; setPlaying(false); });
+  document.addEventListener('keydown', e => { if (e.code === 'Space' && e.target === document.body) { e.preventDefault(); setPlaying(!playing); } });
+
+  let dirty = true, fpsShown = 0;
+  function ui() {
+    scrub.value = t.toFixed(2); scrub.style.setProperty('--p', (t / DUR * 100) + '%');
+    tc.innerHTML = `${t.toFixed(2)} s <small>/ ${DUR.toFixed(2)} s</small>`;
+    let cur = -1; PANELS.forEach((p, i) => { if (t >= p.t - .05) cur = i; });
+    PANELS.forEach((p, i) => $('panel' + i).classList.toggle('on', i === cur));
+  }
+  function frame(now) {
+    if (playing) {
+      if (last) {
+        const dt = Math.min((now - last) / 1000, .1);
+        t = (t + dt * speed) % DUR;
+        deltas.push(dt); if (deltas.length > 30) deltas.shift();
+        if (deltas.length === 30) {
+          const avg = deltas.reduce((a, b) => a + b) / 30;
+          fpsShown = 1 / avg;
+          if (avg > 1 / 24 && renderW > 480) { renderW = Math.max(480, Math.round(renderW * .8)); deltas.length = 0; }
+          else if (avg < 1 / 50 && renderW < maxW()) { renderW = Math.min(maxW(), Math.round(renderW * 1.15)); deltas.length = 0; }
+        }
+      }
+      last = now; dirty = true;
+    }
+    if (dirty) {
+      draw(t); ui(); dirty = false;
+      status.textContent = `Rendering at ${renderW}×${Math.round(renderW * 9 / 16)}` + (playing && fpsShown ? ` · ${fpsShown.toFixed(0)} fps` : playing ? '' : ' · paused');
+    }
+    requestAnimationFrame(frame);
+  }
+  cv.addEventListener('webglcontextlost', e => { e.preventDefault(); fail('The graphics context was lost. Reload the page to restart the animation.'); });
+  setPlaying(playing);
+  requestAnimationFrame(frame);
+})();
+</script>
