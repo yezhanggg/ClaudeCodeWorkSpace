@@ -1,0 +1,207 @@
+<!doctype html><html><head><meta charset="utf-8"><title>The Journal Cloud: Character Catalog</title>
+<style>@font-face{font-family:'Cormorant Garamond';font-style:italic;font-weight:500;src:url(fonts/CormorantGaramond-500-italic.woff2) format('woff2');}
+@font-face{font-family:'Cormorant Garamond';font-style:normal;font-weight:500;src:url(fonts/CormorantGaramond-500-normal.woff2) format('woff2');}
+@font-face{font-family:'Cormorant Garamond';font-style:normal;font-weight:600;src:url(fonts/CormorantGaramond-600-normal.woff2) format('woff2');}
+@font-face{font-family:'Figtree';font-style:normal;font-weight:400;src:url(fonts/Figtree-400-normal.woff2) format('woff2');}
+@font-face{font-family:'Figtree';font-style:normal;font-weight:500;src:url(fonts/Figtree-500-normal.woff2) format('woff2');}
+@font-face{font-family:'Figtree';font-style:normal;font-weight:600;src:url(fonts/Figtree-600-normal.woff2) format('woff2');}
+/* Layout: A4 landscape spreads in the style of the reference sheets: cream paper, a classic serif for names,
+   letter-spaced small labels, and the warm gold of the cloud's glow as the only accent. */
+:root {
+  --paper: #f7f1e8;
+  --paper-2: #efe6d8;
+  --ink: #3f332c;
+  --muted: #8b7b6e;
+  --line: #d9cbb8;
+  --gold: #c99a5b;
+  --night: #1b1a22;
+  --serif: 'Cormorant Garamond', 'Times New Roman', serif;
+  --sans: 'Figtree', 'Helvetica Neue', Arial, sans-serif;
+}
+@page { size: 297mm 210mm; margin: 0; }
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--sans); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+img { display: block; width: 100%; height: 100%; object-fit: cover; }
+a { color: var(--ink); text-decoration-color: var(--gold); }
+
+.page { position: relative; width: 297mm; height: 210mm; padding: 13mm 16mm 14mm; overflow: hidden; page-break-after: always; break-after: page;
+  display: flex; flex-direction: column; gap: 4.2mm; background: var(--paper); }
+.run { display: flex; justify-content: space-between; font: 500 6.6pt/1 var(--sans); letter-spacing: .32em; text-transform: uppercase; color: var(--muted);
+  padding-bottom: 2.6mm; border-bottom: .3mm solid var(--line); }
+.folio { position: absolute; bottom: 6.5mm; left: 0; right: 0; text-align: center; font: 500 7pt/1 var(--sans); letter-spacing: .3em; color: var(--muted); }
+h2 { font: 500 27pt/1.05 var(--serif); margin: 1mm 0 0; letter-spacing: -.005em; }
+h2 em, h1 em { font-style: italic; color: var(--gold); }
+h3 { font: 500 19pt/1 var(--serif); margin: 0; }
+.label { margin: 0; font: 600 6.6pt/1 var(--sans); letter-spacing: .28em; text-transform: uppercase; color: var(--muted); }
+.note, .lede { margin: 0; font: 400 9pt/1.55 var(--sans); color: var(--ink); max-width: 175mm; }
+.lede { font: 500 15pt/1.35 var(--serif); max-width: none; }
+
+figure { margin: 0; display: flex; flex-direction: column; gap: 1.6mm; min-width: 0; }
+.ph { border-radius: 2.2mm; overflow: hidden; background: var(--paper-2); aspect-ratio: 4 / 3; }
+figcaption { display: flex; flex-direction: column; gap: .8mm; text-align: center; }
+figcaption b { font: 500 10.5pt/1.1 var(--serif); }
+figcaption span { font: 500 5.6pt/1.3 var(--sans); letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+
+.row { display: grid; gap: 3mm; }
+.row.three { grid-template-columns: repeat(3, 1fr); }
+.row.four { grid-template-columns: repeat(4, 1fr); }
+.row.five { grid-template-columns: repeat(5, 1fr); }
+.row.six { grid-template-columns: repeat(6, 1fr); }
+.row.ten { grid-template-columns: repeat(10, 1fr); gap: 2mm; }
+.row.eleven { grid-template-columns: repeat(11, 1fr); gap: 1.8mm; }
+.row.ten .ph, .row.eleven .ph { aspect-ratio: 3 / 4; }
+.row.ten figcaption b, .row.eleven figcaption b { font-size: 8pt; }
+.row.six .ph { aspect-ratio: 4 / 3; }
+.row.five .ph { aspect-ratio: 1 / 1; }
+.dark .ph, .hero-card.dark { background: #000; }
+
+.grid { display: grid; gap: 3.2mm 4mm; flex: 1; min-height: 0; }
+.grid.g4 { grid-template-columns: repeat(4, 1fr); }
+.grid.g5 { grid-template-columns: repeat(5, 1fr); }
+.grid.g3 { grid-template-columns: repeat(3, 1fr); }
+.dense .grid.g4 .ph { aspect-ratio: 16 / 10; }
+.grid.g5 .ph { aspect-ratio: 1 / 1; }
+.grid.anim { flex: 0 0 auto; }
+.grid.anim .ph { aspect-ratio: 16 / 9; }
+.two.usage { flex: 0 0 auto; align-items: start; }
+.grid.env .ph { aspect-ratio: 16 / 10; }
+
+.two { display: grid; grid-template-columns: 1.05fr 1fr; gap: 9mm; flex: 1; min-height: 0; }
+.two.wide { flex: 0 0 auto; grid-template-columns: 1.15fr 1fr; }
+.two.wide .hero-card { aspect-ratio: 16 / 9; }
+.hero-card { border-radius: 3mm; overflow: hidden; background: #000; align-self: start; aspect-ratio: 3 / 2; }
+.stack { display: flex; flex-direction: column; gap: 4.5mm; min-width: 0; }
+.facts { display: grid; grid-template-columns: 26mm 1fr; gap: 2.4mm 4mm; margin: 0; padding: 3.5mm 0; border-top: .3mm solid var(--line); border-bottom: .3mm solid var(--line); }
+.facts dt { font: 600 6.6pt/1.6 var(--sans); letter-spacing: .22em; text-transform: uppercase; color: var(--muted); }
+.facts dd { margin: 0; font: 400 9pt/1.45 var(--sans); }
+.swatches { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3mm; }
+.sw { display: flex; flex-direction: column; gap: 1.2mm; }
+.sw i { display: block; height: 13mm; border-radius: 50%; width: 13mm; border: .3mm solid var(--line); }
+.sw b { font: 500 11pt/1 var(--serif); }
+.sw span { font: 500 6pt/1.35 var(--sans); letter-spacing: .06em; color: var(--muted); }
+
+.split { display: grid; grid-template-columns: 1.35fr 1fr; gap: 7mm; }
+.split > div { display: flex; flex-direction: column; gap: 3mm; }
+.split .row.four .ph { aspect-ratio: 4 / 3; }
+.split .row.three .ph { aspect-ratio: 3 / 4; }
+
+.rules { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6mm; padding-top: 3.5mm; border-top: .3mm solid var(--line); }
+.rules div { display: flex; flex-direction: column; gap: 1.4mm; }
+.rules b { font: 500 13pt/1.1 var(--serif); }
+.rules span { font: 400 8.4pt/1.45 var(--sans); }
+
+.wx { display: grid; grid-template-columns: 40mm 1fr; gap: 6mm; align-items: center; flex: 1; min-height: 0; border-top: .3mm solid var(--line); padding-top: 2.4mm; }
+.wx .ph { aspect-ratio: 16 / 9.4; }
+.wx-head p { margin: 1.5mm 0 2.5mm; font: 500 6.4pt/1.5 var(--sans); letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+.wx-head h3 { font-size: 24pt; }
+.dots { display: flex; gap: 1.6mm; }
+.dots i { width: 5mm; height: 5mm; border-radius: 50%; display: block; }
+.wx figcaption b { font-size: 9.5pt; }
+
+.dos { padding: 6mm 7mm; border-radius: 3mm; background: var(--paper-2); }
+.dos h3 { color: var(--gold); margin-bottom: 3mm; }
+.dont h3 { color: var(--muted); }
+.dos ul { margin: 0; padding-left: 4.5mm; display: flex; flex-direction: column; gap: 2.6mm; font: 400 10pt/1.45 var(--sans); }
+.closing { display: flex; align-items: center; gap: 7mm; margin-top: auto; padding-bottom: 6mm; }
+.closing img { width: 48mm; height: 30mm; border-radius: 2.5mm; }
+.closing p { margin: 0; font: italic 500 22pt/1.2 var(--serif); }
+
+/* cover */
+.cover { padding: 0; flex-direction: row; gap: 0; background: #000; color: #f6ecdf; }
+.cover-img { flex: 1.45; height: 100%; }
+.cover-img img { object-fit: contain; }
+.cover-text { flex: 1; padding: 22mm 16mm 18mm 12mm; display: flex; flex-direction: column; justify-content: center; gap: 6mm; background: #000; }
+.cover .eyebrow { margin: 0; font: 600 7pt/1 var(--sans); letter-spacing: .34em; text-transform: uppercase; color: #c9a77c; }
+.cover h1 { margin: 0; font: 500 52pt/.95 var(--serif); letter-spacing: -.01em; }
+.cover .tag { margin: 0; font: italic 500 15pt/1.35 var(--serif); color: #e9d9c4; }
+.cover .meta { margin: 6mm 0 0; padding-top: 4mm; border-top: .3mm solid #4a4038; font: 500 6.6pt/1.6 var(--sans); letter-spacing: .24em; text-transform: uppercase; color: #a8957f; }
+</style></head><body><section class="page cover">
+  <div class="cover-img"><img src="img/hero_black.jpg" alt="The Journal Cloud"></div>
+  <div class="cover-text">
+    <p class="eyebrow">Character catalog · Volume 01</p>
+    <h1>The Journal<br>Cloud</h1>
+    <p class="tag">A small cloud for a brighter day.<br>Simple form, endless emotions.</p>
+    <p class="meta">Felt character · Light-beam reactions · Weather moods · Motion</p>
+  </div>
+</section><section class="page "><header class="run"><span>The Journal Cloud</span><span>Meet the character</span></header><h2>Meet <em>Journal</em></h2>
+<div class="two">
+  <div class="hero-card"><img src="img/hero_black.jpg" alt="Journal, front view"></div>
+  <div class="stack">
+    <p class="lede">Journal is a small needle-felted cloud with two glossy black eyes and no mouth. It never speaks:
+    it shows how it feels through shape, tilt, light and a few glowing marks drawn in the air.</p>
+    <dl class="facts">
+      <dt>Form</dt><dd>One big central puff with a domed top, side puffs left and right, a small upper-right puff, a softly bumped underside</dd>
+      <dt>Material</dt><dd>Felted wool: soft, slightly fuzzy fibres with natural variation</dd>
+      <dt>Eyes</dt><dd>Two smooth, slightly glossy black ovals; no mouth</dd>
+      <dt>Light</dt><dd>Backlit glow around the whole silhouette, warm in the creases</dd>
+      <dt>Proportions</dt><dd>Height about 0.7 × width · each eye about 12% of width · eyes about 20% of width apart</dd>
+    </dl>
+    <p class="label">Colour palette</p>
+    <div class="swatches"><div class="sw"><i style="background:#F5EDE1"></i><b>Main cloud</b><span>#F5EDE1 · Warm white (cream)</span></div><div class="sw"><i style="background:#E6D8C7"></i><b>Shadow</b><span>#E6D8C7 · Soft beige</span></div><div class="sw"><i style="background:#FFD9A6"></i><b>Warm light</b><span>#FFD9A6 · Sunset glow, highlight</span></div><div class="sw"><i style="background:#1A1A1A"></i><b>Eye</b><span>#1A1A1A · Deep black, glossy</span></div></div>
+  </div>
+</div><footer class="folio">02</footer></section><section class="page "><header class="run"><span>The Journal Cloud</span><span>Form &amp; materials</span></header><h2>Turnaround and details</h2>
+<p class="label">Turnaround</p><div class="row five"><figure class=""><div class="ph"><img src="img/turn1.jpg" alt="Front"></div><figcaption><b>Front</b></figcaption></figure><figure class=""><div class="ph"><img src="img/turn2.jpg" alt="3/4 view"></div><figcaption><b>3/4 view</b></figcaption></figure><figure class=""><div class="ph"><img src="img/turn3.jpg" alt="Side view (left)"></div><figcaption><b>Side view (left)</b></figcaption></figure><figure class=""><div class="ph"><img src="img/turn4.jpg" alt="Back"></div><figcaption><b>Back</b></figcaption></figure><figure class=""><div class="ph"><img src="img/turn5.jpg" alt="3/4 view (right)"></div><figcaption><b>3/4 view (right)</b></figcaption></figure></div>
+<div class="split">
+  <div><p class="label">Close-ups</p><div class="row four"><figure class=""><div class="ph"><img src="img/detail1.jpg" alt="Felt / wool texture"></div><figcaption><b>Felt / wool texture</b><span>Soft, slightly fuzzy fibres</span></figcaption></figure><figure class=""><div class="ph"><img src="img/detail2.jpg" alt="Eye detail"></div><figcaption><b>Eye detail</b><span>Smooth, slightly glossy black oval</span></figcaption></figure><figure class=""><div class="ph"><img src="img/detail3.jpg" alt="Edge lighting"></div><figcaption><b>Edge lighting</b><span>Soft glow from sunlight, subtle translucency</span></figcaption></figure><figure class=""><div class="ph"><img src="img/detail4.jpg" alt="Bottom view"></div><figcaption><b>Bottom view</b><span>Slightly flatter underside</span></figcaption></figure></div></div>
+  <div><p class="label">Lighting reference</p><div class="row three"><figure class=""><div class="ph"><img src="img/light1.jpg" alt="Daylight"></div><figcaption><b>Daylight</b></figcaption></figure><figure class=""><div class="ph"><img src="img/light2.jpg" alt="Golden hour"></div><figcaption><b>Golden hour</b></figcaption></figure><figure class=""><div class="ph"><img src="img/light3.jpg" alt="Night"></div><figcaption><b>Night</b></figcaption></figure></div></div>
+</div><footer class="folio">03</footer></section><section class="page dense"><header class="run"><span>The Journal Cloud</span><span>Expressions</span></header><h2>Cloud reactions</h2><div class="grid g4"><figure class=""><div class="ph"><img src="img/react01.jpg" alt="1. Neutral"></div><figcaption><b>1. Neutral</b><span>Quiet and present</span></figcaption></figure><figure class=""><div class="ph"><img src="img/react02.jpg" alt="2. Happy"></div><figcaption><b>2. Happy</b><span>Bright and joyful</span></figcaption></figure><figure class=""><div class="ph"><img src="img/react03.jpg" alt="3. Excited"></div><figcaption><b>3. Excited</b><span>Full of energy</span></figcaption></figure><figure class=""><div class="ph"><img src="img/react04.jpg" alt="4. Curious"></div><figcaption><b>4. Curious</b><span>Wondering about the world</span></figcaption></figure><figure class=""><div class="ph"><img src="img/react05.jpg" alt="5. Surprised"></div><figcaption><b>5. Surprised</b><span>Wide awake</span></figcaption></figure><figure class=""><div class="ph"><img src="img/react06.jpg" alt="6. Sleepy"></div><figcaption><b>6. Sleepy</b><span>Resting peacefully</span></figcaption></figure><figure class=""><div class="ph"><img src="img/react07.jpg" alt="7. Calm"></div><figcaption><b>7. Calm</b><span>Balanced and at ease</span></figcaption></figure><figure class=""><div class="ph"><img src="img/react08.jpg" alt="8. Thinking"></div><figcaption><b>8. Thinking</b><span>Exploring ideas</span></figcaption></figure><figure class=""><div class="ph"><img src="img/react09.jpg" alt="9. Dizzy"></div><figcaption><b>9. Dizzy</b><span>Spinning thoughts</span></figcaption></figure><figure class=""><div class="ph"><img src="img/react10.jpg" alt="10. Shy"></div><figcaption><b>10. Shy</b><span>A little timid</span></figcaption></figure><figure class=""><div class="ph"><img src="img/react11.jpg" alt="11. Fast / Zoom"></div><figcaption><b>11. Fast / Zoom</b><span>Off to new places</span></figcaption></figure><figure class=""><div class="ph"><img src="img/react12.jpg" alt="12. Magical / Inspired"></div><figcaption><b>12. Magical / Inspired</b><span>Big dreams ahead</span></figcaption></figure></div><footer class="folio">04</footer></section><section class="page "><header class="run"><span>The Journal Cloud</span><span>Expressions</span></header><h2>Mood through shape, tilt and light</h2>
+<p class="note">Journal has no mouth. Moods come from the body first: rounder for happy, a tilt for curious, a little
+stretch for excited, eyes lower for sleepy. Light-beam marks are added on top when a feeling needs to read from far away.</p>
+<p class="label">Mood variations (shape, tilt, lighting)</p><div class="row six"><figure class=""><div class="ph"><img src="img/mood1.jpg" alt="Neutral"></div><figcaption><b>Neutral</b></figcaption></figure><figure class=""><div class="ph"><img src="img/mood2.jpg" alt="Happy"></div><figcaption><b>Happy</b><span>Slightly rounder</span></figcaption></figure><figure class=""><div class="ph"><img src="img/mood3.jpg" alt="Curious"></div><figcaption><b>Curious</b><span>Tilted</span></figcaption></figure><figure class=""><div class="ph"><img src="img/mood4.jpg" alt="Excited"></div><figcaption><b>Excited</b><span>Slightly stretched up</span></figcaption></figure><figure class=""><div class="ph"><img src="img/mood5.jpg" alt="Calm"></div><figcaption><b>Calm</b><span>Soft</span></figcaption></figure><figure class=""><div class="ph"><img src="img/mood6.jpg" alt="Sleepy"></div><figcaption><b>Sleepy</b><span>Eyes slightly lower</span></figcaption></figure></div>
+<p class="label">Emotions with light-beam reactions</p><div class="row ten"><figure class=""><div class="ph"><img src="img/beam01.jpg" alt="Neutral"></div><figcaption><b>Neutral</b></figcaption></figure><figure class=""><div class="ph"><img src="img/beam02.jpg" alt="Happy"></div><figcaption><b>Happy</b></figcaption></figure><figure class=""><div class="ph"><img src="img/beam03.jpg" alt="Excited"></div><figcaption><b>Excited</b></figcaption></figure><figure class=""><div class="ph"><img src="img/beam04.jpg" alt="Surprised"></div><figcaption><b>Surprised</b></figcaption></figure><figure class=""><div class="ph"><img src="img/beam05.jpg" alt="Curious"></div><figcaption><b>Curious</b></figcaption></figure><figure class=""><div class="ph"><img src="img/beam06.jpg" alt="Calm"></div><figcaption><b>Calm</b></figcaption></figure><figure class=""><div class="ph"><img src="img/beam07.jpg" alt="Sleepy"></div><figcaption><b>Sleepy</b></figcaption></figure><figure class=""><div class="ph"><img src="img/beam08.jpg" alt="Shy"></div><figcaption><b>Shy</b></figcaption></figure><figure class=""><div class="ph"><img src="img/beam10.jpg" alt="Confused"></div><figcaption><b>Confused</b></figcaption></figure><figure class=""><div class="ph"><img src="img/beam11.jpg" alt="Sad"></div><figcaption><b>Sad</b></figcaption></figure></div><footer class="folio">05</footer></section><section class="page "><header class="run"><span>The Journal Cloud</span><span>Light-beam elements</span></header><h2>Indicators and symbols</h2>
+<div class="grid g5"><figure class=""><div class="ph"><img src="img/sign01.jpg" alt="Point / Highlight"></div><figcaption><b>Point / Highlight</b></figcaption></figure><figure class=""><div class="ph"><img src="img/sign02.jpg" alt="Arrow"></div><figcaption><b>Arrow</b></figcaption></figure><figure class=""><div class="ph"><img src="img/sign03.jpg" alt="Circle / Focus"></div><figcaption><b>Circle / Focus</b></figcaption></figure><figure class=""><div class="ph"><img src="img/sign04.jpg" alt="Sparkle / Star"></div><figcaption><b>Sparkle / Star</b></figcaption></figure><figure class=""><div class="ph"><img src="img/sign05.jpg" alt="Exclamation"></div><figcaption><b>Exclamation</b></figcaption></figure><figure class=""><div class="ph"><img src="img/sign06.jpg" alt="Question"></div><figcaption><b>Question</b></figcaption></figure><figure class=""><div class="ph"><img src="img/sign07.jpg" alt="Love"></div><figcaption><b>Love</b></figcaption></figure><figure class=""><div class="ph"><img src="img/sign08.jpg" alt="Idea"></div><figcaption><b>Idea</b></figcaption></figure><figure class=""><div class="ph"><img src="img/sign09.jpg" alt="Attention"></div><figcaption><b>Attention</b></figcaption></figure><figure class=""><div class="ph"><img src="img/sign10.jpg" alt="Loading / Thinking"></div><figcaption><b>Loading / Thinking</b></figcaption></figure></div>
+<div class="rules">
+  <div><b>Drawn in light</b><span>Every mark is a thin warm-gold stroke (#FFD9A6) with a soft glow, never a solid shape.</span></div>
+  <div><b>Close to the body</b><span>Marks sit around the head or orbit the cloud; they never cover the eyes.</span></div>
+  <div><b>One idea at a time</b><span>Use a single symbol per moment so the feeling reads at a glance.</span></div>
+  <div><b>No words</b><span>Symbols replace text: a question mark, never the word “why”.</span></div>
+</div><footer class="folio">06</footer></section><section class="page "><header class="run"><span>The Journal Cloud</span><span>Motion</span></header><h2>Actions and movement</h2>
+<p class="label">Actions with light trails</p><div class="row eleven"><figure class=""><div class="ph"><img src="img/action01.jpg" alt="1. Sit still"></div><figcaption><b>1. Sit still</b></figcaption></figure><figure class=""><div class="ph"><img src="img/action02.jpg" alt="2. Lift up"></div><figcaption><b>2. Lift up</b></figcaption></figure><figure class=""><div class="ph"><img src="img/action03.jpg" alt="3. Rising"></div><figcaption><b>3. Rising</b></figcaption></figure><figure class=""><div class="ph"><img src="img/action04.jpg" alt="4. Higher"></div><figcaption><b>4. Higher</b></figcaption></figure><figure class=""><div class="ph"><img src="img/action05.jpg" alt="5. Turn left"></div><figcaption><b>5. Turn left</b></figcaption></figure><figure class=""><div class="ph"><img src="img/action06.jpg" alt="6. Side view"></div><figcaption><b>6. Side view</b></figcaption></figure><figure class=""><div class="ph"><img src="img/action07.jpg" alt="6. Back view"></div><figcaption><b>6. Back view</b></figcaption></figure><figure class=""><div class="ph"><img src="img/action08.jpg" alt="7. Rotating"></div><figcaption><b>7. Rotating</b></figcaption></figure><figure class=""><div class="ph"><img src="img/action09.jpg" alt="8. Side view"></div><figcaption><b>8. Side view</b></figcaption></figure><figure class=""><div class="ph"><img src="img/action10.jpg" alt="9. Turning to front"></div><figcaption><b>9. Turning to front</b></figcaption></figure><figure class=""><div class="ph"><img src="img/action11.jpg" alt="10. Settle"></div><figcaption><b>10. Settle</b></figcaption></figure></div>
+<p class="label">Animation sequence: sit still, float up, turn around</p><div class="row ten"><figure class=""><div class="ph"><img src="img/seq01.jpg" alt="1. Start (sitting still)"></div><figcaption><b>1. Start (sitting still)</b></figcaption></figure><figure class=""><div class="ph"><img src="img/seq02.jpg" alt="2. Idle (subtle breathing)"></div><figcaption><b>2. Idle (subtle breathing)</b></figcaption></figure><figure class=""><div class="ph"><img src="img/seq03.jpg" alt="3. Begin to float"></div><figcaption><b>3. Begin to float</b></figcaption></figure><figure class=""><div class="ph"><img src="img/seq04.jpg" alt="4. Rising"></div><figcaption><b>4. Rising</b></figcaption></figure><figure class=""><div class="ph"><img src="img/seq05.jpg" alt="5. Higher"></div><figcaption><b>5. Higher</b></figcaption></figure><figure class=""><div class="ph"><img src="img/seq06.jpg" alt="6. Turning left"></div><figcaption><b>6. Turning left</b></figcaption></figure><figure class=""><div class="ph"><img src="img/seq07.jpg" alt="7. 3/4 side"></div><figcaption><b>7. 3/4 side</b></figcaption></figure><figure class=""><div class="ph"><img src="img/seq08.jpg" alt="8. Side / back"></div><figcaption><b>8. Side / back</b></figcaption></figure><figure class=""><div class="ph"><img src="img/seq09.jpg" alt="9. Back view (almost)"></div><figcaption><b>9. Back view (almost)</b></figcaption></figure><figure class=""><div class="ph"><img src="img/seq10.jpg" alt="10. Back view (final)"></div><figcaption><b>10. Back view (final)</b></figcaption></figure></div>
+<p class="label">Storyboard for the 10-second animation</p><div class="row ten"><figure class=""><div class="ph"><img src="img/board01.jpg" alt="1. Front"></div><figcaption><b>1. Front</b></figcaption></figure><figure class=""><div class="ph"><img src="img/board02.jpg" alt="2. Eyes slide right"></div><figcaption><b>2. Eyes slide right</b></figcaption></figure><figure class=""><div class="ph"><img src="img/board03.jpg" alt="3. Turning"></div><figcaption><b>3. Turning</b></figcaption></figure><figure class=""><div class="ph"><img src="img/board04.jpg" alt="4. Eye at the edge"></div><figcaption><b>4. Eye at the edge</b></figcaption></figure><figure class=""><div class="ph"><img src="img/board05.jpg" alt="5. Back"></div><figcaption><b>5. Back</b></figcaption></figure><figure class=""><div class="ph"><img src="img/board06.jpg" alt="6. Back"></div><figcaption><b>6. Back</b></figcaption></figure><figure class=""><div class="ph"><img src="img/board07.jpg" alt="7. Back, other side"></div><figcaption><b>7. Back, other side</b></figcaption></figure><figure class=""><div class="ph"><img src="img/board08.jpg" alt="8. Eyes return"></div><figcaption><b>8. Eyes return</b></figcaption></figure><figure class=""><div class="ph"><img src="img/board09.jpg" alt="9. Float up"></div><figcaption><b>9. Float up</b></figcaption></figure><figure class=""><div class="ph"><img src="img/board10.jpg" alt="10. Glint"></div><figcaption><b>10. Glint</b></figcaption></figure></div>
+<p class="note">Motion is slow and buoyant: Journal eases into every move, floats rather than jumps, and settles with a
+small overshoot. Light trails show direction (an arrow for lift, a ring for rotation) and fade as the move ends.</p><footer class="folio">07</footer></section><section class="page dense"><header class="run"><span>The Journal Cloud</span><span>Weather moods</span></header><h2>Rain, snow and night</h2><div class="wx"><div class="wx-head"><h3>Rain</h3><p>Cozy, fresh and full of life</p><div class="dots"><i style="background:#8E90A8"></i><i style="background:#AEB0C2"></i><i style="background:#D3D4DE"></i><i style="background:#8FA6C8"></i></div></div><div class="row four"><figure class=""><div class="ph"><img src="img/weather01.jpg" alt="Drizzly / Cozy rain"></div><figcaption><b>Drizzly / Cozy rain</b><span>A gentle, comforting rain</span></figcaption></figure><figure class=""><div class="ph"><img src="img/weather02.jpg" alt="Stormy"></div><figcaption><b>Stormy</b><span>Windy and intense</span></figcaption></figure><figure class=""><div class="ph"><img src="img/weather03.jpg" alt="Shaking off rain"></div><figcaption><b>Shaking off rain</b><span>A fresh shake</span></figcaption></figure><figure class=""><div class="ph"><img src="img/weather04.jpg" alt="Refreshing after rain"></div><figcaption><b>Refreshing after rain</b><span>Clean, bright, renewed</span></figcaption></figure></div></div><div class="wx"><div class="wx-head"><h3>Snow</h3><p>Crisp, magical and peaceful</p><div class="dots"><i style="background:#EEF1FA"></i><i style="background:#D2D6EA"></i><i style="background:#B1C3EE"></i><i style="background:#9CB3DF"></i></div></div><div class="row four"><figure class=""><div class="ph"><img src="img/weather05.jpg" alt="Chilly"></div><figcaption><b>Chilly</b><span>A crisp, cold day</span></figcaption></figure><figure class=""><div class="ph"><img src="img/weather06.jpg" alt="Shivering"></div><figcaption><b>Shivering</b><span>A little cold</span></figcaption></figure><figure class=""><div class="ph"><img src="img/weather07.jpg" alt="Snowy joy"></div><figcaption><b>Snowy joy</b><span>Full of playful energy</span></figcaption></figure><figure class=""><div class="ph"><img src="img/weather08.jpg" alt="Peaceful snow"></div><figcaption><b>Peaceful snow</b><span>Quiet and serene</span></figcaption></figure></div></div><div class="wx"><div class="wx-head"><h3>Night</h3><p>Dreamy, calm and full of wonder</p><div class="dots"><i style="background:#3E3F66"></i><i style="background:#7A6B9B"></i><i style="background:#8E68C2"></i><i style="background:#BC9EE0"></i></div></div><div class="row four"><figure class=""><div class="ph"><img src="img/weather09.jpg" alt="Sleepy"></div><figcaption><b>Sleepy</b><span>Resting peacefully</span></figcaption></figure><figure class=""><div class="ph"><img src="img/weather10.jpg" alt="Dreaming"></div><figcaption><b>Dreaming</b><span>Lost in a sweet dream</span></figcaption></figure><figure class=""><div class="ph"><img src="img/weather11.jpg" alt="Curious at night"></div><figcaption><b>Curious at night</b><span>Wondering what’s next</span></figcaption></figure><figure class=""><div class="ph"><img src="img/weather12.jpg" alt="Magical night"></div><figcaption><b>Magical night</b><span>Big dreams ahead</span></figcaption></figure></div></div><footer class="folio">08</footer></section><section class="page dense"><header class="run"><span>The Journal Cloud</span><span>Environments</span></header><h2>One companion, every kind of sky</h2>
+<div class="grid g4 env"><figure class=""><div class="ph"><img src="img/env07.jpg" alt="Daytime"></div><figcaption><b>Daytime</b></figcaption></figure><figure class=""><div class="ph"><img src="img/env08.jpg" alt="Golden hour"></div><figcaption><b>Golden hour</b></figcaption></figure><figure class=""><div class="ph"><img src="img/env09.jpg" alt="Nighttime"></div><figcaption><b>Nighttime</b></figcaption></figure><figure class=""><div class="ph"><img src="img/envD1.jpg" alt="Travel / daytime"></div><figcaption><b>Travel / daytime</b></figcaption></figure><figure class=""><div class="ph"><img src="img/env01.jpg" alt="Snow"></div><figcaption><b>Snow</b></figcaption></figure><figure class=""><div class="ph"><img src="img/env02.jpg" alt="Rain"></div><figcaption><b>Rain</b></figcaption></figure><figure class=""><div class="ph"><img src="img/env03.jpg" alt="Mixed / drizzle"></div><figcaption><b>Mixed / drizzle</b></figcaption></figure><figure class=""><div class="ph"><img src="img/envD2.jpg" alt="Rainy"></div><figcaption><b>Rainy</b></figcaption></figure><figure class=""><div class="ph"><img src="img/env04.jpg" alt="Night (idle)"></div><figcaption><b>Night (idle)</b></figcaption></figure><figure class=""><div class="ph"><img src="img/env05.jpg" alt="Sleepy night"></div><figcaption><b>Sleepy night</b></figcaption></figure><figure class=""><div class="ph"><img src="img/env06.jpg" alt="Starry"></div><figcaption><b>Starry</b></figcaption></figure><figure class=""><div class="ph"><img src="img/envD3.jpg" alt="Snowy"></div><figcaption><b>Snowy</b></figcaption></figure></div>
+<p class="note">The felt body keeps its cream colour everywhere; the world tints it. Daylight is neutral, golden hour
+adds peach in the creases, night turns the glow lavender, and rain greys the wool down.</p><footer class="folio">09</footer></section><section class="page "><header class="run"><span>The Journal Cloud</span><span>3D model</span></header><h2>Journal as a real-time 3D model</h2>
+<div class="two wide">
+  <div class="hero-card dark"><img src="img/model/t0_75.jpg" alt="3D model, front view"></div>
+  <div class="stack">
+    <p class="lede">For animation, Journal is built as a raymarched 3D shape that runs live in a web browser, on a phone,
+    tablet or computer.</p>
+    <dl class="facts">
+      <dt>Shape</dt><dd>One central mass and 12 felt puffs, blended smoothly, laid out from the hero image</dd>
+      <dt>Surface</dt><dd>Curly felt fibres at three scales, peach creases, a backlit fuzzy rim and glow</dd>
+      <dt>Eyes</dt><dd>Glossy beads set into the felt, with a soft highlight upper left; they blink and squeeze</dd>
+      <dt>Motion</dt><dd>Spring physics for every move: overshoot, follow-through, and puffs that settle on their own</dd>
+    </dl>
+  </div>
+</div>
+<p class="label">Model turnaround</p><div class="row five dark"><figure class=""><div class="ph"><img src="img/model/t0_75.jpg" alt="Front"></div><figcaption><b>Front</b></figcaption></figure><figure class=""><div class="ph"><img src="img/model/t2_75.jpg" alt="3/4 turning right"></div><figcaption><b>3/4 turning right</b></figcaption></figure><figure class=""><div class="ph"><img src="img/model/t3_05.jpg" alt="Side"></div><figcaption><b>Side</b></figcaption></figure><figure class=""><div class="ph"><img src="img/model/t3_50.jpg" alt="Back"></div><figcaption><b>Back</b></figcaption></figure><figure class=""><div class="ph"><img src="img/model/t4_00.jpg" alt="Other side"></div><figcaption><b>Other side</b></figcaption></figure></div><footer class="folio">10</footer></section><section class="page "><header class="run"><span>The Journal Cloud</span><span>In motion</span></header><h2>The 10-second animation</h2>
+<div class="grid g4 anim"><figure class=""><div class="ph"><img src="img/anim/t0_80.jpg" alt="0.8 s · Hover"></div><figcaption><b>0.8 s · Hover</b><span>Idle breathing, a blink</span></figcaption></figure><figure class=""><div class="ph"><img src="img/anim/t2_75.jpg" alt="2.8 s · Turn away"></div><figcaption><b>2.8 s · Turn away</b><span>Eyes slide off to the right</span></figcaption></figure><figure class=""><div class="ph"><img src="img/anim/t3_50.jpg" alt="3.5 s · Back view"></div><figcaption><b>3.5 s · Back view</b><span>No face, puffs roll past</span></figcaption></figure><figure class=""><div class="ph"><img src="img/anim/t4_05.jpg" alt="4.1 s · Eyes return"></div><figcaption><b>4.1 s · Eyes return</b><span>From the left side</span></figcaption></figure><figure class=""><div class="ph"><img src="img/anim/t6_65.jpg" alt="6.7 s · Crouch"></div><figcaption><b>6.7 s · Crouch</b><span>Squash before the rise</span></figcaption></figure><figure class=""><div class="ph"><img src="img/anim/t7_10.jpg" alt="7.1 s · Rise"></div><figcaption><b>7.1 s · Rise</b><span>Stretch, the shadow shrinks</span></figcaption></figure><figure class=""><div class="ph"><img src="img/anim/t8_30.jpg" alt="8.3 s · Glint"></div><figcaption><b>8.3 s · Glint</b><span>Happy squint, light ticks</span></figcaption></figure><figure class=""><div class="ph"><img src="img/anim/t9_20.jpg" alt="9.2 s · Settle"></div><figcaption><b>9.2 s · Settle</b><span>Proud float, then fade</span></figcaption></figure></div>
+<p class="note">Built from the storyboard: a full turn, a crouch and rise, then a glint. Watch it live at
+<a href="https://claude.ai/artifact/W6Gg6RLsoEpavnzvQ5oqBv">claude.ai/artifact/W6Gg6RLsoEpavnzvQ5oqBv</a> (private link; sign in to claude.ai). The rendered files are
+<b>puff_cloud_10s.mp4</b> (1080p, 30 fps) and <b>puff_cloud_10s.gif</b>.</p><footer class="folio">11</footer></section><section class="page "><header class="run"><span>The Journal Cloud</span><span>Usage</span></header><h2>Keeping Journal on model</h2>
+<div class="two usage">
+  <div class="dos">
+    <h3>Do</h3>
+    <ul>
+      <li>Keep the cream felt colour and the warm backlit glow in every scene.</li>
+      <li>Keep the eyes small, glossy and level: about 12% of the width, 20% apart.</li>
+      <li>Show feelings with shape, tilt and light first, then add one light-beam mark.</li>
+      <li>Let the world tint the cloud: peach at golden hour, lavender at night, grey in rain.</li>
+      <li>Move slowly and buoyantly, with an ease in and a soft settle.</li>
+    </ul>
+  </div>
+  <div class="dos dont">
+    <h3>Don't</h3>
+    <ul>
+      <li>Add a mouth, eyebrows, arms or legs.</li>
+      <li>Use hard outlines, flat cartoon colour or a plastic shine on the felt.</li>
+      <li>Stack several symbols at once, or put symbols over the eyes.</li>
+      <li>Use words in place of symbols.</li>
+      <li>Snap between poses or move at one constant speed.</li>
+    </ul>
+  </div>
+</div>
+<div class="closing"><img src="img/react12.jpg" alt=""><p>A little light in every kind of day.</p></div><footer class="folio">12</footer></section></body></html>
